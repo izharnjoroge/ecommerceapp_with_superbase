@@ -32,41 +32,67 @@ class _ItemTileState extends State<ItemTile> {
         const Gap(10),
         Row(
           children: [
-            Text(
-              widget.productModel.name,
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                widget.productModel.name,
+                style: TextStyle(
+                  color: widget.productModel.color,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
         const Gap(10),
         Row(
           children: [
-            Text(
-              widget.productModel.description,
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.clip,
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                widget.productModel.description,
+                softWrap: true,
+                maxLines: 2,
+                overflow: TextOverflow.clip,
+              ),
             ),
           ],
         ),
         const Spacer(),
-        ElevatedButton(
-            onPressed: () {
-              context.read<CartProvider>().addToCart(widget.productModel);
-            },
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/dollar.svg',
-                  color: Colors.black,
-                  height: 20,
-                ),
-                Text(
-                  widget.productModel.price,
-                  style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ))
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(widget.productModel.color)),
+              onPressed: () {
+                context.read<CartProvider>().addToCart(widget.productModel);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    'assets/dollar.svg',
+                    color: Colors.black,
+                    height: 20,
+                  ),
+                  Text(
+                    widget.productModel.price,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  const Row(
+                    children: [
+                      Text(
+                        'Add To cart',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+        )
       ]),
     );
   }

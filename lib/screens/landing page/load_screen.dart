@@ -26,38 +26,38 @@ class LandingPage extends StatelessWidget {
           assetLocation: 'assets/apple.jpg'),
       ProductModel(
           name: 'Basket',
-          color: Colors.yellow,
+          color: Colors.orange,
           price: '5.30',
-          description: 'Our pick for the best fruits',
+          description: 'Our pick.',
           assetLocation: 'assets/basket.jpg'),
       ProductModel(
           name: 'Favourite',
           color: Colors.purpleAccent,
           price: '5.20',
-          description: 'Voted as everyones\n favourite pick',
+          description: 'Voted by everyone.',
           assetLocation: 'assets/composition.jpg')
     ];
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(children: [
-                const Row(
-                  children: [
-                    Text('Welcome',
-                        style: TextStyle(color: Colors.black, fontSize: 20)),
-                  ],
-                ),
-                const Gap(30),
-                const Text(
-                  'Get Fresh Products, right to your doorstep',
-                  style: TextStyle(color: Colors.black, fontSize: 30),
-                ),
-                const Gap(30),
-                SizedBox(
-                  height: size.height,
+          body: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(children: [
+              const Row(
+                children: [
+                  Text('Welcome',
+                      style: TextStyle(color: Colors.black, fontSize: 20)),
+                ],
+              ),
+              const Gap(20),
+              const Text(
+                'Get Fresh Products, right to your doorstep',
+                style: TextStyle(color: Colors.black, fontSize: 30),
+              ),
+              const Gap(30),
+              Expanded(
+                child: SizedBox(
+                  height: size.height * .85,
                   child: GridView.builder(
                       itemCount: list.length,
                       padding: const EdgeInsets.all(12),
@@ -69,17 +69,18 @@ class LandingPage extends StatelessWidget {
                               crossAxisCount: 2),
                       itemBuilder: ((context, index) {
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 30.0),
+                          padding: const EdgeInsets.only(bottom: 20.0),
                           child: ItemTile(
                             productModel: list[index],
                           ),
                         );
                       })),
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
           floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.grey,
             onPressed: () {
               Get.to(() => const CartPage());
             },
