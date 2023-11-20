@@ -16,84 +16,73 @@ class ItemTile extends StatefulWidget {
 class _ItemTileState extends State<ItemTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.productModel.color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(children: [
+    return Column(children: [
+      Stack(children: [
         SizedBox(
-            width: 150,
-            height: 150,
-            child: Image.asset(
-              widget.productModel.assetLocation,
-              fit: BoxFit.cover,
-            )),
-        const Gap(10),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                widget.productModel.name,
-                style: TextStyle(
-                  color: widget.productModel.color,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+          width: 150,
+          height: 150,
+          child: Image.asset(
+            widget.productModel.assetLocation,
+            fit: BoxFit.cover,
+          ),
         ),
-        const Gap(10),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                widget.productModel.description,
-                softWrap: true,
-                maxLines: 2,
-                overflow: TextOverflow.clip,
-              ),
+        Positioned(
+          top: 8.0,
+          right: 8.0,
+          child: IconButton(
+            icon: const Icon(
+              Icons.favorite_border_outlined,
+              color: Colors.grey,
             ),
-          ],
-        ),
-        const Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(widget.productModel.color)),
-              onPressed: () {
-                context.read<CartProvider>().addToCart(widget.productModel);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset(
-                    'assets/dollar.svg',
-                    color: Colors.black,
-                    height: 20,
-                  ),
-                  Text(
-                    widget.productModel.price,
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  const Row(
-                    children: [
-                      Text(
-                        'Add To cart',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+            onPressed: () {
+              // Add your favorite button logic here
+            },
+          ),
         )
       ]),
-    );
+      const Gap(10),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  widget.productModel.name,
+                  style: TextStyle(
+                    color: widget.productModel.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const Gap(10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'KSH:  ' '${widget.productModel.price.toString()}',
+                  style: const TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.bold),
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.clip,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.read<CartProvider>().addToCart(widget.productModel);
+                  },
+                  child: SvgPicture.asset(
+                    'assets/cart_fast.svg',
+                    colorFilter:
+                        const ColorFilter.mode(Colors.purple, BlendMode.srcIn),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
+    ]);
   }
 }

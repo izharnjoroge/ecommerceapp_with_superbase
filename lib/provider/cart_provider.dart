@@ -7,7 +7,28 @@ class CartProvider extends ChangeNotifier {
   get productData => _productModel;
 
   void addToCart(ProductModel product) {
-    _productModel.add(product);
+    // Check if the product is already in the cart
+    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
+
+    if (existingIndex != -1) {
+      _productModel[existingIndex].quantity += product.quantity!;
+    } else {
+      _productModel.add(product);
+    }
+
+    notifyListeners();
+  }
+
+  void decreaseItemCart(ProductModel product) {
+    // Check if the product is already in the cart
+    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
+
+    if (existingIndex != -1) {
+      _productModel[existingIndex].quantity - product.quantity;
+    } else {
+      _productModel.remove(product);
+    }
+
     notifyListeners();
   }
 
@@ -16,11 +37,13 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getTotal() {
+  double getTotal() {
     double total = 0.0;
+
     for (int i = 0; i < _productModel.length; i++) {
-      total += double.parse(_productModel[i].price);
+      total += _productModel[i].price * _productModel[i].quantity!;
     }
-    return total.toString();
+
+    return total;
   }
 }

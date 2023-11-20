@@ -11,14 +11,20 @@ class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
-Future main() async {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env").then((value) => () async {
+        initSupaBase();
+      });
+
+  runApp(const MyApp());
+}
+
+Future<void> initSupaBase() async {
   await Supabase.initialize(
     url: dotenv.env['PUBLIC_URL']!,
     anonKey: dotenv.env['PUBLIC_KEY']!,
   );
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -44,7 +50,7 @@ class MyApp extends StatelessWidget {
                   ),
                   // Center(
                   //   child: const Text(
-                  //     'Fat and Fresh Produce At Your Door Step',
+                  //     'Fast and Fresh Produce At Your Door Step',
                   //     textAlign: TextAlign.center,
                   //     style: TextStyle(
                   //       color: Colors.black,
