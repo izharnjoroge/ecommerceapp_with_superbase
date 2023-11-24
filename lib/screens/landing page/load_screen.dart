@@ -2,6 +2,7 @@ import 'package:ecommerceapp/models/carousel_model.dart';
 import 'package:ecommerceapp/models/category_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
+import 'package:ecommerceapp/screens/widgets/custom_appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -79,30 +80,31 @@ class _LandingPageState extends State<LandingPage> {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: const Text('CHINA SQUARE',
-                style: TextStyle(
-                    color: Colors.purple,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25)),
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.purple,
-                )),
-            actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.person_2_outlined,
-                    color: Colors.purple,
-                  ))
-            ],
-          ),
+          appBar: const CustomAppBar(),
+          // appBar: AppBar(
+          //   title: const Text('CHINA SQUARE',
+          //       style: TextStyle(
+          //           color: Colors.purple,
+          //           fontWeight: FontWeight.w600,
+          //           fontSize: 25)),
+          //   centerTitle: true,
+          //   elevation: 0,
+          //   backgroundColor: Colors.transparent,
+          //   leading: IconButton(
+          //       onPressed: () {},
+          //       icon: const Icon(
+          //         Icons.menu,
+          //         color: Colors.purple,
+          //       )),
+          //   actions: [
+          //     IconButton(
+          //         onPressed: () {},
+          //         icon: const Icon(
+          //           Icons.person_2_outlined,
+          //           color: Colors.purple,
+          //         ))
+          //   ],
+          // ),
           body: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(children: [

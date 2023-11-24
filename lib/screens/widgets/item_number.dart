@@ -81,7 +81,7 @@ class _ItemCountState extends State<ItemCount> {
               setState(() {
                 itemCount++;
               });
-              context.read<CartProvider>().addToCart(
+              context.read<CartProvider>().increaseItemCart(
                     ProductModel(
                       name: widget.productModel.name,
                       price: widget.productModel.price,

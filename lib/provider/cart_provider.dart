@@ -8,15 +8,19 @@ class CartProvider extends ChangeNotifier {
 
   void addToCart(ProductModel product) {
     // Check if the product is already in the cart
-    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
-
-    if (existingIndex != -1) {
-      _productModel[existingIndex].quantity += product.quantity!;
-    } else {
+    if (!_productModel.contains(product)) {
       _productModel.add(product);
+      notifyListeners();
     }
+  }
 
-    notifyListeners();
+  void increaseItemCart(ProductModel product) {
+    // Check if the product is already in the cart
+    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
+    if (existingIndex != -1) {
+      _productModel[existingIndex].quantity += product.quantity;
+      notifyListeners();
+    }
   }
 
   void decreaseItemCart(ProductModel product) {
@@ -24,12 +28,9 @@ class CartProvider extends ChangeNotifier {
     int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
 
     if (existingIndex != -1) {
-      _productModel[existingIndex].quantity - product.quantity;
-    } else {
-      _productModel.remove(product);
+      _productModel[existingIndex].quantity -= product.quantity;
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 
   void removeFromCart(ProductModel product) {
@@ -41,7 +42,8 @@ class CartProvider extends ChangeNotifier {
     double total = 0.0;
 
     for (int i = 0; i < _productModel.length; i++) {
-      total += _productModel[i].price * _productModel[i].quantity!;
+      print(_productModel[i].quantity);
+      total += _productModel[i].price * _productModel[i].quantity;
     }
 
     return total;

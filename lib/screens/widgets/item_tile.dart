@@ -70,6 +70,7 @@ class _ItemTileState extends State<ItemTile> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    print(widget.productModel.quantity);
                     context.read<CartProvider>().addToCart(widget.productModel);
                   },
                   child: SvgPicture.asset(
