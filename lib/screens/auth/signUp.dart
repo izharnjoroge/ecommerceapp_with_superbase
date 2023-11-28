@@ -1,8 +1,6 @@
 import 'dart:typed_data';
-import 'package:ecommerceapp/screens/auth/signIn.dart';
 import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -82,13 +80,15 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: SvgPicture.asset(
-          'assets/cart_fast.svg',
-          color: Colors.black,
-          height: 64,
+        foregroundColor: Colors.black,
+        automaticallyImplyLeading: true,
+        title: const Text(
+          'Create An Account',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple),
         ),
         centerTitle: true,
       ),
@@ -143,9 +143,14 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: 'User Name',
-                    hintText: 'Enter your User Name',
-                  ),
+                      icon: Icon(Icons.person_2_outlined),
+                      iconColor: Colors.purple,
+                      labelText: 'User Name',
+                      labelStyle: TextStyle(
+                          color: Colors.purple, fontWeight: FontWeight.bold),
+                      hintText: 'Enter your User Name',
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.purple))),
                   keyboardType: TextInputType.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (val) {
@@ -159,9 +164,14 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                    ),
+                        icon: Icon(Icons.email_outlined),
+                        iconColor: Colors.purple,
+                        labelText: 'Email',
+                        labelStyle: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                        hintText: 'Enter your email',
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.purple))),
                     keyboardType: TextInputType.emailAddress,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (val) {
@@ -172,9 +182,14 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                  ),
+                      icon: Icon(Icons.key_outlined),
+                      iconColor: Colors.purple,
+                      labelText: 'Password',
+                      labelStyle: TextStyle(
+                          color: Colors.purple, fontWeight: FontWeight.bold),
+                      hintText: 'Enter your password',
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.purple))),
                   obscureText: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (val) {
@@ -184,59 +199,26 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const Gap(20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       height: size.height * .05,
-                      width: size.width - 100,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          if (_emailController.text.isEmpty ||
-                              _passwordController.text.isEmpty ||
-                              _nameController.text.isEmpty) {
-                            Get.snackbar("Error", "Please fill all the fields",
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                                snackPosition: SnackPosition.BOTTOM,
-                                isDismissible: true,
-                                duration: const Duration(seconds: 3));
+                      width: size.width * .3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.purple,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: GestureDetector(
+                          onTap: () async {
                             setState(() {
-                              isLoading = false;
+                              isLoading = true;
                             });
-                          } else if ((!_signUpFormKey.currentState!
-                              .validate())) {
-                            Get.snackbar("Error", "Please fill all the fields",
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                                snackPosition: SnackPosition.BOTTOM,
-                                isDismissible: true,
-                                duration: const Duration(seconds: 3));
-                            setState(() {
-                              isLoading = false;
-                            });
-                          } else {
-                            final email = _emailController.text;
-                            final password = _passwordController.text;
-                            final name = _nameController.text;
-                            final image = _pickedFile;
 
-                            if (responce == 'Welcome') {
-                              Get.snackbar(responce, '',
-                                  backgroundColor: Colors.green,
-                                  colorText: Colors.white,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  isDismissible: true,
-                                  duration: const Duration(seconds: 3));
-                              setState(() {
-                                isLoading = false;
-                              });
-                              Get.offAll(() => const LandingPage());
-                            } else {
-                              Get.snackbar(responce, '',
+                            if (_emailController.text.isEmpty ||
+                                _passwordController.text.isEmpty ||
+                                _nameController.text.isEmpty) {
+                              Get.snackbar(
+                                  "Error", "Please fill all the fields",
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,
                                   snackPosition: SnackPosition.BOTTOM,
@@ -245,41 +227,87 @@ class _SignUpState extends State<SignUp> {
                               setState(() {
                                 isLoading = false;
                               });
-                              Get.back();
+                            } else if ((!_signUpFormKey.currentState!
+                                .validate())) {
+                              Get.snackbar(
+                                  "Error", "Please fill all the fields",
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  isDismissible: true,
+                                  duration: const Duration(seconds: 3));
+                              setState(() {
+                                isLoading = false;
+                              });
+                            } else {
+                              final email = _emailController.text;
+                              final password = _passwordController.text;
+                              final name = _nameController.text;
+                              final image = _pickedFile;
+
+                              if (responce == 'Welcome') {
+                                Get.snackbar(responce, '',
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    isDismissible: true,
+                                    duration: const Duration(seconds: 3));
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.offAll(() => const LandingPage());
+                              } else {
+                                Get.snackbar(responce, '',
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    isDismissible: true,
+                                    duration: const Duration(seconds: 3));
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.back();
+                              }
                             }
-                          }
-                        },
-                        child: isLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.blue,
+                          },
+                          child: isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.blue,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'Continue',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              )
-                            : const Text('Sign Up'),
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already have an account?',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    const Gap(10),
                     GestureDetector(
-                      onTap: () => Get.to(() => const LoginScreen()),
-                      child: const Text(
-                        'Log In',
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
-                      ),
-                    )
+                      onTap: () => Get.back(),
+                      child: RichText(
+                          selectionColor: Colors.grey,
+                          text: const TextSpan(children: [
+                            TextSpan(
+                                text: 'Have an account?  ',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold)),
+                            TextSpan(
+                                text: 'Sign In',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.purple,
+                                ))
+                          ])),
+                    ),
                   ],
                 ),
-                const Spacer(),
               ],
             ),
           ),

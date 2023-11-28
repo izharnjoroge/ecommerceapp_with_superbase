@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -40,21 +41,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class AppBarClipper extends CustomClipper<Path> {
   @override
-  // Path getClip(Size size) {
-  //   final path = Path();
-  //   const radius = 20.0;
-
-  //   path.lineTo(0, size.height - radius);
-  //   path.quadraticBezierTo(
-  //       size.width / 4, size.height, size.width / 2, size.height);
-  //   path.quadraticBezierTo(
-  //       3 * size.width / 4, size.height, size.width, size.height - radius);
-  //   path.lineTo(size.width, 0);
-  //   path.close();
-
-  //   return path;
-  // }
-  @override
   Path getClip(Size size) {
     double curveHeight = size.height / 1.6;
     var p = Path()
@@ -69,6 +55,52 @@ class AppBarClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class SplashAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SplashAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(500.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(
+      clipper: Customshape(),
+      child: AppBar(
+        flexibleSpace: ClipPath(
+          clipper: Customshape(),
+          child: SizedBox(
+            height: 490,
+            child: Lottie.asset(
+              "assets/lotties/robot.json",
+            ),
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.purple,
+      ),
+    );
+  }
+}
+
+class Customshape extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    double curveHeight = size.height / 1.4;
+    var p = Path()
+      ..lineTo(0, size.height)
+      ..quadraticBezierTo(0, curveHeight, curveHeight - 100, curveHeight)
+      ..quadraticBezierTo(size.width, curveHeight, size.width, size.width - 150)
+      ..lineTo(size.width, 0);
+
+    return p;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
   }
 }

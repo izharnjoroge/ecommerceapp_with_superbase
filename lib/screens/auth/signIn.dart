@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Center(
                     child: CircularProgressIndicator(
-                      color: Colors.blue,
+                      color: Colors.purple,
                     ),
                   ),
                 ],
@@ -72,23 +73,30 @@ class _LoginScreenState extends State<LoginScreen> {
             : Form(
                 key: _loginFormKey,
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: Column(
                     children: [
-                      const Gap(100),
-                      SvgPicture.asset(
-                        'assets/cart_fast.svg',
-                        color: Colors.black,
-                        height: 64,
-                      ),
+                      // SvgPicture.asset(
+                      //   'assets/svg/cart_fast.svg',
+                      //   color: Colors.purple,
+                      //   height: 100,
+                      // ),
+                      Lottie.asset("assets/lotties/login.json",
+                          height: size.height * .4),
                       const Gap(20),
                       TextFormField(
                         controller: _emailController,
                         cursorColor: Colors.black,
                         decoration: const InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                        ),
+                            icon: Icon(Icons.email),
+                            iconColor: Colors.purple,
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
+                            hintText: 'Enter your email',
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.purple))),
                         keyboardType: TextInputType.emailAddress,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (val) {
@@ -101,17 +109,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _passwordController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              !_isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                            icon: const Icon(Icons.key_outlined),
+                            iconColor: Colors.purple,
+                            labelText: 'Password',
+                            labelStyle: const TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
+                            hintText: 'Enter your password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                !_isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: _togglePasswordVisibility,
                             ),
-                            onPressed: _togglePasswordVisibility,
-                          ),
-                        ),
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.purple))),
                         obscureText: _isPasswordVisible,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (val) {
@@ -120,146 +134,123 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const Gap(20),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const Gap(20),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             height: size.height * .05,
-                            width: size.width - 100,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                setState(() {
-                                  isLoading = true;
-                                });
-
-                                if (_emailController.text.isEmpty ||
-                                    _passwordController.text.isEmpty) {
-                                  Get.snackbar(
-                                      "Error", "Please fill all the fields",
-                                      backgroundColor: Colors.red,
-                                      colorText: Colors.white,
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      isDismissible: true,
-                                      duration: const Duration(seconds: 3));
+                            width: size.width * .3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.purple,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: GestureDetector(
+                                onTap: () async {
                                   setState(() {
-                                    isLoading = false;
+                                    isLoading = true;
                                   });
-                                } else if (!_loginFormKey.currentState!
-                                    .validate()) {
-                                  Get.snackbar(
-                                      "Error", "Please fill all the fields",
-                                      backgroundColor: Colors.red,
-                                      colorText: Colors.white,
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      isDismissible: true,
-                                      duration: const Duration(seconds: 3));
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                } else {
-                                  final email = _emailController.text;
-                                  final password = _passwordController.text;
 
-                                  if (responce == 'Success') {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-
-                                    Get.snackbar(responce, '',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        isDismissible: true,
-                                        duration: const Duration(seconds: 3));
-
-                                    Get.offAll(() => const LandingPage());
-                                  } else {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Get.snackbar(responce, '',
+                                  if (_emailController.text.isEmpty ||
+                                      _passwordController.text.isEmpty) {
+                                    Get.snackbar(
+                                        "Error", "Please fill all the fields",
                                         backgroundColor: Colors.red,
                                         colorText: Colors.white,
                                         snackPosition: SnackPosition.BOTTOM,
                                         isDismissible: true,
                                         duration: const Duration(seconds: 3));
-                                    Get.back();
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else if (!_loginFormKey.currentState!
+                                      .validate()) {
+                                    Get.snackbar(
+                                        "Error", "Please fill all the fields",
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        isDismissible: true,
+                                        duration: const Duration(seconds: 3));
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else {
+                                    final email = _emailController.text;
+                                    final password = _passwordController.text;
+
+                                    if (responce == 'Success') {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+
+                                      Get.snackbar(responce, '',
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          isDismissible: true,
+                                          duration: const Duration(seconds: 3));
+
+                                      Get.offAll(() => const LandingPage());
+                                    } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Get.snackbar(responce, '',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          isDismissible: true,
+                                          duration: const Duration(seconds: 3));
+                                      Get.back();
+                                    }
                                   }
-                                }
-                              },
-                              child: isLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.blue,
+                                },
+                                child: isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.purple,
+                                        ),
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                          'Continue',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  : const Text('Continue'),
+                              ),
                             ),
+                          ),
+                          const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       const Spacer(),
-                      SizedBox(
-                        height: size.height * 0.2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/fb.svg',
-                                  color: Colors.blueAccent,
-                                  height: 32,
-                                ),
-                                const Text(
-                                  '  Log In With Facebook',
+                      TextButton(
+                        onPressed: () {
+                          Get.to(() => const SignUp());
+                        },
+                        child: RichText(
+                            selectionColor: Colors.grey,
+                            text: const TextSpan(children: [
+                              TextSpan(
+                                  text: 'Dont have an account?  ',
                                   style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            const Text(
-                              'OR',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.to(() => const SignUp());
-                              },
-                              child: RichText(
-                                  selectionColor: Colors.grey,
-                                  text: const TextSpan(children: [
-                                    TextSpan(
-                                        text: 'Dont have an account?  ',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(
-                                        text: 'Sign Up',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue,
-                                        ))
-                                  ])),
-                            ),
-                          ],
-                        ),
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: 'Sign Up',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.purple,
+                                  ))
+                            ])),
                       ),
                     ],
                   ),

@@ -289,7 +289,7 @@ class _LandingPageState extends State<LandingPage> {
               Get.to(() => const CartPage());
             },
             child: SvgPicture.asset(
-              'assets/cart_fast.svg',
+              'assets/svg/cart_fast.svg',
               colorFilter:
                   const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),

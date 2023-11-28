@@ -74,7 +74,7 @@ class _ItemTileState extends State<ItemTile> {
                     context.read<CartProvider>().addToCart(widget.productModel);
                   },
                   child: SvgPicture.asset(
-                    'assets/cart_fast.svg',
+                    'assets/svg/cart_fast.svg',
                     colorFilter:
                         const ColorFilter.mode(Colors.purple, BlendMode.srcIn),
                   ),

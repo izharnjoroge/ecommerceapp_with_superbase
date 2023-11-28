@@ -75,7 +75,7 @@ class ItemDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SvgPicture.asset(
-                            'assets/dollar.svg',
+                            'assets/svg/dollar.svg',
                             colorFilter: const ColorFilter.mode(
                                 Colors.black, BlendMode.srcIn),
                             height: 20,
@@ -120,7 +120,7 @@ class ItemDetails extends StatelessWidget {
             Get.to(() => const CartPage());
           },
           child: SvgPicture.asset(
-            'assets/cart_fast.svg',
+            'assets/svg/cart_fast.svg',
             colorFilter:
                 const ColorFilter.mode(Colors.yellowAccent, BlendMode.srcIn),
           ),

@@ -107,7 +107,7 @@ class CartPage extends StatelessWidget {
                       Row(
                         children: [
                           SvgPicture.asset(
-                            'assets/dollar.svg',
+                            'assets/svg/dollar.svg',
                             colorFilter: const ColorFilter.mode(
                                 Colors.black, BlendMode.srcIn),
                             height: 20,
