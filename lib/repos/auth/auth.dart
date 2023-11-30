@@ -4,26 +4,35 @@ class Auth {
   final supabase = Supabase.instance.client;
 
   Future<String> signUp(
-      String userEmail, String password, String phone, String username) async {
-    final AuthResponse res = await supabase.auth.signUp(
-      phone: phone,
-      password: password,
-      data: {'username': username},
-    );
-    final Session? session = res.session;
-    final User? user = res.user;
+      String userEmail, String password, String username) async {
+    try {
+      final AuthResponse res = await supabase.auth.signUp(
+        // phone: phone,
+        email: userEmail,
+        password: password,
+        data: {'username': username},
+      );
+      final Session? session = res.session;
+      final User? user = res.user;
 
-    return user!.id;
+      return 'Welcome';
+    } catch (e) {
+      return e.toString();
+    }
   }
 
-  Future<String> signIn(String phone, String password) async {
-    final AuthResponse res = await supabase.auth.signInWithPassword(
-      phone: phone,
-      password: password,
-    );
-    final Session? session = res.session;
-    final User? user = res.user;
-    return user!.id;
+  Future<String> signIn(String email, String password) async {
+    try {
+      final AuthResponse res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      final Session? session = res.session;
+      final User? user = res.user;
+      return 'Success';
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<void> signInWithOtp(String phone) async {

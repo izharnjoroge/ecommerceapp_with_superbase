@@ -6,7 +6,6 @@ class OrderRepo {
   Future getOrders() async {
     final User? user = supabase.auth.currentUser;
     final res = await supabase.from('orders').select().eq('user_id', user!.id);
-    print(res);
     return res;
   }
 }

@@ -6,6 +6,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../repos/auth/auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final Auth auth = Auth();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
@@ -121,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 !_isPasswordVisible
                                     ? Icons.visibility
                                     : Icons.visibility_off,
+                                color: Colors.purple,
                               ),
                               onPressed: _togglePasswordVisibility,
                             ),
@@ -177,7 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   } else {
                                     final email = _emailController.text;
                                     final password = _passwordController.text;
-
+                                    responce =
+                                        await auth.signIn(email, password);
                                     if (responce == 'Success') {
                                       setState(() {
                                         isLoading = false;

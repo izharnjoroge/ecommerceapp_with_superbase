@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:ecommerceapp/repos/auth/auth.dart';
 import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -13,6 +14,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final Auth auth = Auth();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -102,43 +104,43 @@ class _SignUpState extends State<SignUp> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Gap(20),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 100,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: _pickedFile != null
-                          ? MemoryImage(_pickedFile!)
-                          : null,
-                      child: _pickedFile == null
-                          ? const Icon(
-                              Icons.person_outline,
-                              size: 60,
-                              color: Colors.white,
-                            )
-                          : null,
-                    ),
-                    Positioned(
-                      bottom: 18,
-                      right: 10,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.file_upload,
-                        ),
-                        onPressed: _getImageFromGallery,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 18,
-                      left: 16,
-                      child: IconButton(
-                        icon: const Icon(Icons.camera),
-                        onPressed: _takePhoto,
-                      ),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   alignment: Alignment.center,
+                //   children: [
+                //     CircleAvatar(
+                //       radius: 100,
+                //       backgroundColor: Colors.grey,
+                //       backgroundImage: _pickedFile != null
+                //           ? MemoryImage(_pickedFile!)
+                //           : null,
+                //       child: _pickedFile == null
+                //           ? const Icon(
+                //               Icons.person_outline,
+                //               size: 60,
+                //               color: Colors.white,
+                //             )
+                //           : null,
+                //     ),
+                //     Positioned(
+                //       bottom: 18,
+                //       right: 10,
+                //       child: IconButton(
+                //         icon: const Icon(
+                //           Icons.file_upload,
+                //         ),
+                //         onPressed: _getImageFromGallery,
+                //       ),
+                //     ),
+                //     Positioned(
+                //       bottom: 18,
+                //       left: 16,
+                //       child: IconButton(
+                //         icon: const Icon(Icons.camera),
+                //         onPressed: _takePhoto,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const Gap(20),
                 TextFormField(
                   controller: _nameController,
@@ -244,7 +246,11 @@ class _SignUpState extends State<SignUp> {
                               final password = _passwordController.text;
                               final name = _nameController.text;
                               final image = _pickedFile;
-
+                              responce = await auth.signUp(
+                                email,
+                                password,
+                                name,
+                              );
                               if (responce == 'Welcome') {
                                 Get.snackbar(responce, '',
                                     backgroundColor: Colors.green,

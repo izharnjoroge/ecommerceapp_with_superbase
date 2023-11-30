@@ -42,7 +42,6 @@ class CartProvider extends ChangeNotifier {
     double total = 0.0;
 
     for (int i = 0; i < _productModel.length; i++) {
-      print(_productModel[i].quantity);
       total += _productModel[i].price * _productModel[i].quantity;
     }
 

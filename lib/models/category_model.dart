@@ -1,27 +1,30 @@
 class CategoryModel {
-  int? id;
-  final String categoryName;
-  String? url;
+  final String category_id;
+  final String created_at;
+  final String name;
+  final String url;
 
-  CategoryModel({
-    this.id,
-    required this.categoryName,
-    this.url,
-  });
+  CategoryModel(
+      {required this.category_id,
+      required this.created_at,
+      required this.name,
+      required this.url});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-      id: json['id'] as int,
-      categoryName: json['name'] as String,
-      url: json['icon_url'] as String,
+      category_id: json['category_id'] as String,
+      created_at: json['created_at'] as String,
+      name: json['name'] as String,
+      url: json['url'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': categoryName,
-      'icon_url': url,
+      'category_id': category_id,
+      'created_at': created_at,
+      'name': name,
+      'url': url,
     };
   }
 }

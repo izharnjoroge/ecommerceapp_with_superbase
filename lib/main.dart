@@ -14,17 +14,15 @@ class NavigationService {
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env").then((value) => () async {
-        initSupaBase();
-      });
-
+  await dotenv.load(fileName: ".env");
+  initSupaBase();
   runApp(const MyApp());
 }
 
 Future<void> initSupaBase() async {
   await Supabase.initialize(
-    url: dotenv.env['PUBLIC_URL']!,
-    anonKey: dotenv.env['PUBLIC_KEY']!,
+    url: dotenv.get('PUBLIC_URL'),
+    anonKey: dotenv.get('PUBLIC_KEY'),
   );
 }
 
@@ -38,14 +36,16 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
           navigatorKey: NavigationService.navigatorKey,
           debugShowCheckedModeBanner: false,
-          title: 'Grocery App',
+          title: 'Ecommerce App',
           home: FlutterSplashScreen(
               useImmersiveMode: true,
               duration: const Duration(seconds: 5),
               nextScreen: const SplashScreen(),
               backgroundColor: Colors.white,
-              splashScreenBody: Lottie.asset(
-                "assets/lotties/splash.json",
+              splashScreenBody: Center(
+                child: Lottie.asset(
+                  "assets/lotties/splash.json",
+                ),
               ))),
     );
   }
