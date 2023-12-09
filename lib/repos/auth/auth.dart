@@ -29,6 +29,7 @@ class Auth {
       );
       final Session? session = res.session;
       final User? user = res.user;
+      print(res);
       return 'Success';
     } catch (e) {
       return e.toString();

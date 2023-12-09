@@ -98,32 +98,33 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ],
               ),
-              const SizedBox(
-                child: CategoryBLoc(),
+              SizedBox(
+                height: size.height * .65,
+                child: const CategoryBLoc(),
               ),
               const Gap(10),
-              Expanded(
-                child: SizedBox(
-                    height: size.height * .45,
-                    child: GridView.builder(
-                      itemCount: list.length,
-                      padding: const EdgeInsets.all(12),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                              mainAxisExtent: 250,
-                              crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: ItemTile(
-                            productModel: list[index],
-                          ),
-                        );
-                      },
-                    )),
-              ),
+              // Expanded(
+              //   child: SizedBox(
+              //       height: size.height * .45,
+              //       child: GridView.builder(
+              //         itemCount: list.length,
+              //         padding: const EdgeInsets.all(12),
+              //         gridDelegate:
+              //             const SliverGridDelegateWithFixedCrossAxisCount(
+              //                 crossAxisSpacing: 5,
+              //                 mainAxisSpacing: 5,
+              //                 mainAxisExtent: 250,
+              //                 crossAxisCount: 2),
+              //         itemBuilder: (context, index) {
+              //           return Padding(
+              //             padding: const EdgeInsets.only(bottom: 10.0),
+              //             child: ItemTile(
+              //               productModel: list[index],
+              //             ),
+              //           );
+              //         },
+              //       )),
+              // ),
             ]),
           ),
           floatingActionButton: FloatingActionButton(

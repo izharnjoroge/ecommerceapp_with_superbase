@@ -55,9 +55,11 @@ class _ItemContentState extends State<ItemContent> {
                 mainAxisExtent: 250,
                 crossAxisCount: 2),
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: Center(),
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Center(
+                  child: Text({state.itemModel.length} as String),
+                ),
               );
             },
           );

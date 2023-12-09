@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
+import 'package:ecommerceapp/screens/widgets/items_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,6 +31,7 @@ class CategoryContent extends StatefulWidget {
 }
 
 class _CategoryContentState extends State<CategoryContent> {
+  String selectedID = '';
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,11 @@ class _CategoryContentState extends State<CategoryContent> {
             child: Column(
               children: [
                 TabBar(
+                  onTap: (value) {
+                    setState(() {
+                      selectedID = state.categoryModel[value].category_id;
+                    });
+                  },
                   dividerColor: const Color.fromARGB(221, 29, 29, 29),
                   labelColor: Colors.purple,
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -74,36 +81,13 @@ class _CategoryContentState extends State<CategoryContent> {
                     );
                   }).toList(),
                 ),
-                // Expanded(
-                //   child: TabBarView(
-                //     children: categories.map((category) {
-                //       return Container(
-                //         margin: const EdgeInsets.all(10),
-                //         width: MediaQuery.of(context).size.width * 0.35,
-                //         decoration: BoxDecoration(
-                //           color: Colors.white,
-                //           borderRadius: BorderRadius.circular(12),
-                //           boxShadow: [
-                //             BoxShadow(
-                //               color: Colors.grey.withOpacity(0.5),
-                //               spreadRadius: 5,
-                //               blurRadius: 7,
-                //               offset: const Offset(0, 3),
-                //             ),
-                //           ],
-                //         ),
-                //         child: Center(
-                //           child: Text(
-                //             category.categoryName,
-                //             style: const TextStyle(
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //           ),
-                //         ),
-                //       );
-                //     }).toList(),
-                //   ),
-                // ),
+                Expanded(
+                  child: TabBarView(
+                    children: state.categoryModel.map((category) {
+                      return ItemsBloc(categoryId: selectedID);
+                    }).toList(),
+                  ),
+                ),
               ],
             ),
           );
@@ -113,7 +97,7 @@ class _CategoryContentState extends State<CategoryContent> {
           );
         } else {
           return const Center(
-            child: Text('error'),
+            child: Text('error fetching data'),
           );
         }
       },
