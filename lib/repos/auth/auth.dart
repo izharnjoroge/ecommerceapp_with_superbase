@@ -12,8 +12,8 @@ class Auth {
         password: password,
         data: {'username': username},
       );
-      final Session? session = res.session;
-      final User? user = res.user;
+      // final Session? session = res.session;
+      // final User? user = res.user;
 
       return 'Welcome';
     } catch (e) {
@@ -27,9 +27,8 @@ class Auth {
         email: email,
         password: password,
       );
-      final Session? session = res.session;
-      final User? user = res.user;
-      print(res);
+      // final Session? session = res.session;
+      // final User? user = res.user;
       return 'Success';
     } catch (e) {
       return e.toString();
@@ -48,8 +47,8 @@ class Auth {
       token: otp,
       phone: phone,
     );
-    final Session? session = res.session;
-    final User? user = res.user;
+    // final Session? session = res.session;
+    // final User? user = res.user;
 
     if (res == '200') {
       return 'success';

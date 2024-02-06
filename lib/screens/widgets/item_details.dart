@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
@@ -7,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetails extends StatelessWidget {
-  final ProductModel productModel;
-  const ItemDetails({super.key, required this.productModel});
+  final ItemModel itemModel;
+  const ItemDetails({super.key, required this.itemModel});
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +36,18 @@ class ItemDetails extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: size.height * 0.6,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Image.asset(productModel.assetLocation),
-                ),
+                    height: size.height * 0.6,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: SvgPicture.network(itemModel.image)),
                 Column(
                   children: [
                     Row(
                       children: [
                         Text(
-                          productModel.name,
+                          itemModel.name,
                           softWrap: true,
                           maxLines: 2,
                           overflow: TextOverflow.clip,
@@ -57,7 +57,7 @@ class ItemDetails extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          productModel.description,
+                          itemModel.description,
                           softWrap: true,
                           maxLines: 2,
                           overflow: TextOverflow.clip,
@@ -81,7 +81,7 @@ class ItemDetails extends StatelessWidget {
                             height: 20,
                           ),
                           Text(
-                            '${productModel.price}',
+                            itemModel.amount,
                             style: const TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold),
@@ -93,9 +93,7 @@ class ItemDetails extends StatelessWidget {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.black)),
                           onPressed: () {
-                            context
-                                .read<CartProvider>()
-                                .addToCart(productModel);
+                            // context.read<CartProvider>().addToCart(itemModel);
                           },
                           child: const Row(
                             children: [

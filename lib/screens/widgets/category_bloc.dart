@@ -82,10 +82,13 @@ class _CategoryContentState extends State<CategoryContent> {
                   }).toList(),
                 ),
                 Expanded(
-                  child: TabBarView(
-                    children: state.categoryModel.map((category) {
-                      return ItemsBloc(categoryId: selectedID);
-                    }).toList(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TabBarView(
+                      children: state.categoryModel.map((category) {
+                        return ItemsBloc(categoryId: selectedID);
+                      }).toList(),
+                    ),
                   ),
                 ),
               ],

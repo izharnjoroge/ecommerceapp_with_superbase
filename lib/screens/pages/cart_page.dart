@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/widgets/item_number.dart';
@@ -11,7 +12,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    List<ProductModel> product = context.watch<CartProvider>().productData;
+    List<ItemModel> Item = context.watch<CartProvider>().itemData;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -31,7 +32,7 @@ class CartPage extends StatelessWidget {
               child: SizedBox(
                 height: size.height * .85,
                 child: ListView.builder(
-                    itemCount: product.length,
+                    itemCount: Item.length,
                     padding: const EdgeInsets.all(12),
                     itemBuilder: (context, index) {
                       return Padding(
@@ -43,11 +44,11 @@ class CartPage extends StatelessWidget {
                             leading: SizedBox(
                                 height: 50,
                                 width: 50,
-                                child: Image.asset(
-                                  product[index].assetLocation,
+                                child: Image.network(
+                                  Item[index].image,
                                   fit: BoxFit.cover,
                                 )),
-                            title: Text(product[index].name),
+                            title: Text(Item[index].name),
                             subtitle: Column(
                               children: [
                                 Row(
@@ -59,23 +60,23 @@ class CartPage extends StatelessWidget {
                                     //       height: 20,
                                     //     ),
                                     Text(
-                                      product[index].price.toString(),
+                                      Item[index].amount.toString(),
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
-                                ItemCount(
-                                  productModel: product[index],
-                                ),
+                                // ItemCount(
+                                //   ItemModel: Item[index],
+                                // ),
                               ],
                             ),
                             trailing: IconButton(
                                 onPressed: () {
                                   context
                                       .read<CartProvider>()
-                                      .removeFromCart(product[index]);
+                                      .removeFromCart(Item[index]);
                                 },
                                 icon: const Icon(Icons.delete)),
                           ),
@@ -158,7 +159,7 @@ class CartPage extends StatelessWidget {
       //     return Column(
       //       children: [
       //         ListView.builder(
-      //             itemCount: value.productData.length,
+      //             itemCount: value.ItemData.length,
       //             padding: EdgeInsets.all(12),
       //             itemBuilder: (context, index) {
       //               return Padding(

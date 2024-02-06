@@ -1,4 +1,6 @@
+import 'package:ecommerceapp/screens/pages/searchPage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,9 +30,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             )),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () => Get.to(() => const SearchPage()),
               icon: const Icon(
-                Icons.person_2_outlined,
+                Icons.search_rounded,
                 color: Colors.white,
               ))
         ],

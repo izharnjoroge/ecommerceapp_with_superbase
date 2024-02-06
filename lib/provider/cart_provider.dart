@@ -1,49 +1,34 @@
-import 'package:ecommerceapp/models/product_model.dart';
+import 'package:ecommerceapp/models/item_model.dart';
 import 'package:flutter/material.dart';
 
 class CartProvider extends ChangeNotifier {
-  final List<ProductModel> _productModel = [];
+  final List<ItemModel> _ItemModel = [];
 
-  get productData => _productModel;
+  get itemData => _ItemModel;
 
-  void addToCart(ProductModel product) {
-    // Check if the product is already in the cart
-    if (!_productModel.contains(product)) {
-      _productModel.add(product);
+  void addToCart(ItemModel item) {
+    if (!_ItemModel.contains(item)) {
+      _ItemModel.add(item);
       notifyListeners();
     }
   }
 
-  void increaseItemCart(ProductModel product) {
-    // Check if the product is already in the cart
-    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
-    if (existingIndex != -1) {
-      _productModel[existingIndex].quantity += product.quantity;
-      notifyListeners();
-    }
-  }
+  // void increaseItemCart(ItemModel item) {
+  //   // Check if the item is already in the cart
+  //   int existingIndex = _ItemModel.indexWhere((p) => p.name == item.name);
+  //   if (existingIndex != -1) {
+  //     _ItemModel[existingIndex].quantity += item.quantity;
+  //     notifyListeners();
+  //   }
+  // }
 
-  void decreaseItemCart(ProductModel product) {
-    // Check if the product is already in the cart
-    int existingIndex = _productModel.indexWhere((p) => p.name == product.name);
-
-    if (existingIndex != -1) {
-      _productModel[existingIndex].quantity -= product.quantity;
-      notifyListeners();
-    }
-  }
-
-  void removeFromCart(ProductModel product) {
-    _productModel.remove(product);
+  void removeFromCart(ItemModel item) {
+    _ItemModel.remove(item);
     notifyListeners();
   }
 
   double getTotal() {
     double total = 0.0;
-
-    for (int i = 0; i < _productModel.length; i++) {
-      total += _productModel[i].price * _productModel[i].quantity;
-    }
 
     return total;
   }

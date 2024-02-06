@@ -30,16 +30,16 @@ class _ItemCountState extends State<ItemCount> {
                 setState(() {
                   itemCount--;
                 });
-                context.read<CartProvider>().decreaseItemCart(
-                      ProductModel(
-                        name: widget.productModel.name,
-                        price: widget.productModel.price,
-                        description: widget.productModel.description,
-                        color: widget.productModel.color,
-                        quantity: itemCount,
-                        assetLocation: widget.productModel.assetLocation,
-                      ),
-                    );
+                // context.read<CartProvider>().decreaseItemCart(
+                //       ProductModel(
+                //         name: widget.productModel.name,
+                //         price: widget.productModel.price,
+                //         description: widget.productModel.description,
+                //         color: widget.productModel.color,
+                //         quantity: itemCount,
+                //         assetLocation: widget.productModel.assetLocation,
+                //       ),
+                //     );
               }
             },
             child: const Row(
@@ -81,16 +81,16 @@ class _ItemCountState extends State<ItemCount> {
               setState(() {
                 itemCount++;
               });
-              context.read<CartProvider>().increaseItemCart(
-                    ProductModel(
-                      name: widget.productModel.name,
-                      price: widget.productModel.price,
-                      description: widget.productModel.description,
-                      color: widget.productModel.color,
-                      quantity: itemCount,
-                      assetLocation: widget.productModel.assetLocation,
-                    ),
-                  );
+              // context.read<CartProvider>().(
+              //       ProductModel(
+              //         name: widget.productModel.name,
+              //         price: widget.productModel.price,
+              //         description: widget.productModel.description,
+              //         color: widget.productModel.color,
+              //         quantity: itemCount,
+              //         assetLocation: widget.productModel.assetLocation,
+              //       ),
+              //     );
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
