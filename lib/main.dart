@@ -39,16 +39,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: NavigationService.navigatorKey,
           debugShowCheckedModeBanner: false,
           title: 'Ecommerce App',
-          home: FlutterSplashScreen(
-              useImmersiveMode: true,
-              duration: const Duration(seconds: 5),
-              nextScreen: const SplashScreen(),
-              backgroundColor: Colors.white,
-              splashScreenBody: Center(
-                child: Lottie.asset(
-                  "assets/lotties/splash.json",
-                ),
-              ))),
+          home: const SplashScreen()),
     );
   }
 }

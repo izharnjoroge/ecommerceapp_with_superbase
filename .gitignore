@@ -46,3 +46,6 @@ app.*.map.json
 
 #Api keys
 *.env
+
+#Idx files
+.idx

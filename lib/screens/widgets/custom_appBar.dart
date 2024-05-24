@@ -76,9 +76,9 @@ class SplashAppBar extends StatelessWidget implements PreferredSizeWidget {
           clipper: Customshape(),
           child: SizedBox(
             height: 490,
-            child: Lottie.asset(
-              "assets/lotties/robot.json",
-            ),
+           // child: Lottie.asset(
+             // "assets/lotties/robot.json",
+            //),
           ),
         ),
         elevation: 0,
