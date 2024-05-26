@@ -70,10 +70,11 @@ class _ItemContentState extends State<ItemContent> {
                     ),
                     padding: const EdgeInsets.all(2),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.network(
                           state.itemModel[index].image,
-                          height: 200,
+                          height: 150,
                           fit: BoxFit.contain,
                         ),
                         Text(

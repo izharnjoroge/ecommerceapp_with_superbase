@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
   String responce = '';
   bool isLoading = false;
+
+  
   @override
   void dispose() {
     _emailController.dispose();
@@ -60,207 +62,212 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: isLoading
-            ? const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.purple,
-                    ),
-                  ),
-                ],
-              )
-            : Form(
-                key: _loginFormKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Column(
+        child: SingleChildScrollView(
+          child:  ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height, 
+        ),
+            child: IntrinsicHeight(
+              child: isLoading
+                ? const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // SvgPicture.asset(
-                      //   'assets/svg/cart_fast.svg',
-                      //   color: Colors.purple,
-                      //   height: 100,
-                      // ),
-                      Lottie.asset("assets/lotties/login.json",
-                          height: size.height * .4),
-                      const Gap(20),
-                      TextFormField(
-                        controller: _emailController,
-                        cursorColor: Colors.black,
-                        decoration: const InputDecoration(
-                            icon: Icon(Icons.email),
-                            iconColor: Colors.purple,
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                                color: Colors.purple,
-                                fontWeight: FontWeight.bold),
-                            hintText: 'Enter your email',
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.purple))),
-                        keyboardType: TextInputType.emailAddress,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (val) {
-                          validateEmail(_emailController.text);
-                          return null;
-                        },
+                      Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.purple,
+                        ),
                       ),
-                      const Gap(20),
-                      TextFormField(
-                        controller: _passwordController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            icon: const Icon(Icons.key_outlined),
-                            iconColor: Colors.purple,
-                            labelText: 'Password',
-                            labelStyle: const TextStyle(
-                                color: Colors.purple,
-                                fontWeight: FontWeight.bold),
-                            hintText: 'Enter your password',
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                !_isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.purple,
-                              ),
-                              onPressed: _togglePasswordVisibility,
-                            ),
-                            focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.purple))),
-                        obscureText: _isPasswordVisible,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (val) {
-                          validatePassword(_passwordController.text);
-                          return null;
-                        },
-                      ),
-                      const Gap(20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: size.height * .05,
-                            width: size.width * .3,
-                            child: Container(
-                              decoration: BoxDecoration(
+                    ],
+                  )
+                : Form(
+                    key: _loginFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Gap(20),
+                        Lottie.asset("assets/lotties/login.json",
+                            height: size.height * .4),
+                        const Gap(20),
+                        TextFormField(
+                          controller: _emailController,
+                          cursorColor: Colors.black,
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.email),
+                              iconColor: Colors.purple,
+                              labelText: 'Email',
+                              labelStyle: TextStyle(
                                   color: Colors.purple,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: GestureDetector(
-                                onTap: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-
-                                  if (_emailController.text.isEmpty ||
-                                      _passwordController.text.isEmpty) {
-                                    Get.snackbar(
-                                        "Error", "Please fill all the fields",
-                                        backgroundColor: Colors.red,
-                                        colorText: Colors.white,
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        isDismissible: true,
-                                        duration: const Duration(seconds: 3));
+                                  fontWeight: FontWeight.bold),
+                              hintText: 'Enter your email',
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple))),
+                          keyboardType: TextInputType.emailAddress,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (val) {
+                            validateEmail(_emailController.text);
+                            return null;
+                          },
+                        ),
+                        const Gap(20),
+                        TextFormField(
+                          controller: _passwordController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              icon: const Icon(Icons.key_outlined),
+                              iconColor: Colors.purple,
+                              labelText: 'Password',
+                              labelStyle: const TextStyle(
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.bold),
+                              hintText: 'Enter your password',
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  !_isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.purple,
+                                ),
+                                onPressed: _togglePasswordVisibility,
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple))),
+                          obscureText: _isPasswordVisible,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (val) {
+                            validatePassword(_passwordController.text);
+                            return null;
+                          },
+                        ),
+                        const Gap(20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              height: size.height * .05,
+                              width: size.width * .3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.purple,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: GestureDetector(
+                                  onTap: () async {
                                     setState(() {
-                                      isLoading = false;
+                                      isLoading = true;
                                     });
-                                  } else if (!_loginFormKey.currentState!
-                                      .validate()) {
-                                    Get.snackbar(
-                                        "Error", "Please fill all the fields",
-                                        backgroundColor: Colors.red,
-                                        colorText: Colors.white,
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        isDismissible: true,
-                                        duration: const Duration(seconds: 3));
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                  } else {
-                                    final email = _emailController.text;
-                                    final password = _passwordController.text;
-                                    responce =
-                                        await auth.signIn(email, password);
-                                    if (responce == 'Success') {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-
-                                      Get.snackbar(responce, '',
-                                          backgroundColor: Colors.green,
-                                          colorText: Colors.white,
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          isDismissible: true,
-                                          duration: const Duration(seconds: 3));
-
-                                      Get.offAll(() => const LandingPage());
-                                    } else {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                      Get.snackbar(responce, '',
+                                      
+                                    if (_emailController.text.isEmpty ||
+                                        _passwordController.text.isEmpty) {
+                                      Get.snackbar(
+                                          "Error", "Please fill all the fields",
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
                                           snackPosition: SnackPosition.BOTTOM,
                                           isDismissible: true,
                                           duration: const Duration(seconds: 3));
-                                      Get.back();
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    } else if (!_loginFormKey.currentState!
+                                        .validate()) {
+                                      Get.snackbar(
+                                          "Error", "Please fill all the fields correctly",
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          isDismissible: true,
+                                          duration: const Duration(seconds: 3));
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    } else {
+                                      final email = _emailController.text;
+                                      final password = _passwordController.text;
+                                      responce =
+                                          await auth.signIn(email, password);
+                                      if (responce == 'Success') {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                    
+                                      
+                                        Get.offAll(() => const LandingPage());
+                                        
+                                        Get.snackbar(responce, '',
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            isDismissible: true,
+                                            duration: const Duration(seconds: 3));
+                                      
+                                       
+                                      } else {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        Get.snackbar(responce, '',
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            isDismissible: true,
+                                            duration: const Duration(seconds: 3));
+                                        Get.back();
+                                      }
                                     }
-                                  }
-                                },
-                                child: isLoading
-                                    ? const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.purple,
-                                        ),
-                                      )
-                                    : const Center(
-                                        child: Text(
-                                          'Continue',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                  },
+                                  child: isLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.purple,
+                                          ),
+                                        )
+                                      : const Center(
+                                          child: Text(
+                                            'Continue',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
-                          ),
-                          const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                color: Colors.purple,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => const SignUp());
-                        },
-                        child: RichText(
-                            selectionColor: Colors.grey,
-                            text: const TextSpan(children: [
-                              TextSpan(
-                                  text: 'Dont have an account?  ',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text: 'Sign Up',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.purple,
-                                  ))
-                            ])),
-                      ),
-                    ],
+                            const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => const SignUp());
+                          },
+                          child: RichText(
+                              selectionColor: Colors.grey,
+                              text: const TextSpan(children: [
+                                TextSpan(
+                                    text: 'Dont have an account?  ',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: 'Sign Up',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.purple,
+                                    ))
+                              ])),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+            ),
+          ),
+        ),
       ),
     );
   }
