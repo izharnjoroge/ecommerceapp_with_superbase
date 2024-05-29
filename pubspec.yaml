@@ -50,6 +50,7 @@ dependencies:
   shimmer: ^3.0.0
   cached_network_image: ^3.3.0
   carousel_slider: ^4.2.1
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:

@@ -13,4 +13,12 @@ class ItemsRepo {
 
     return items;
   }
+
+  Future getItemsByName(String name) async {
+    final res = await supabase.from('items').select().textSearch('name', name);
+    final List<dynamic> data = res as List<dynamic>;
+    final List<ItemModel> items =
+        data.map((item) => ItemModel.fromJson(item)).toList();
+    return items;
+  }
 }

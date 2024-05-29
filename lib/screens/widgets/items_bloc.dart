@@ -37,8 +37,6 @@ class _ItemContentState extends State<ItemContent> {
   @override
   void initState() {
     super.initState();
-    ;
-    log('initState; ${widget.categoryId}');
     context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
   }
 
@@ -46,15 +44,12 @@ class _ItemContentState extends State<ItemContent> {
   void didUpdateWidget(covariant ItemContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.categoryId != widget.categoryId) {
-      log('didUpdateWidget; ${widget.categoryId}');
       context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log('build; ${widget.categoryId}');
-
     return BlocBuilder<ItemsCubit, ItemsState>(
       builder: (context, state) {
         if (state is ItemsLoading) {
@@ -62,7 +57,7 @@ class _ItemContentState extends State<ItemContent> {
             child: CircularProgressIndicator(color: Colors.purple),
           );
         } else if (state is ItemsLoaded) {
-          if (state.itemModel.length > 0) {
+          if (state.itemModel.isNotEmpty) {
             return GridView.builder(
               itemCount: state.itemModel.length,
               padding: const EdgeInsets.all(12),
@@ -129,7 +124,7 @@ class _ItemContentState extends State<ItemContent> {
               },
             );
           } else {
-            return Center(child: Text('Nothing Here'));
+            return const Center(child: Text('Nothing Here'));
           }
         } else if (state is ItemsError) {
           return Center(
@@ -137,7 +132,7 @@ class _ItemContentState extends State<ItemContent> {
           );
         } else {
           return const Center(
-            child: Text('error fetching data'),
+            child: Text('Nothing Here'),
           );
         }
       },

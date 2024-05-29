@@ -27,6 +27,10 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int getItems() {
+    return _ItemModel.length;
+  }
+
   double getTotal() {
     double total = 0.0;
 

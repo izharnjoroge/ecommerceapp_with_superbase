@@ -1,6 +1,8 @@
 import 'package:ecommerceapp/models/carousel_model.dart';
 import 'package:ecommerceapp/models/category_model.dart';
+import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
+import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
 import 'package:ecommerceapp/screens/widgets/banner_bloc.dart';
 import 'package:ecommerceapp/screens/widgets/category_bloc.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -21,6 +25,8 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    List<ItemModel> Item = context.watch<CartProvider>().itemData;
+
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -74,15 +80,30 @@ class _LandingPageState extends State<LandingPage> {
               ]),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.purple,
-            onPressed: () {
-              Get.to(() => const CartPage());
-            },
-            child: SvgPicture.asset(
-              'assets/svg/cart_fast.svg',
-              colorFilter:
-                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+          floatingActionButton: badges.Badge(
+            badgeContent: Text(
+              ' ${Item.length.toString()}',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15),
+            ),
+            position: badges.BadgePosition.topEnd(top: -10, end: -12),
+            badgeAnimation: badges.BadgeAnimation.slide(
+              loopAnimation: false,
+            ),
+            badgeStyle: badges.BadgeStyle(badgeColor: Colors.red),
+            showBadge: true,
+            child: FloatingActionButton(
+              backgroundColor: Colors.purple,
+              onPressed: () {
+                Get.to(() => const CartPage());
+              },
+              child: SvgPicture.asset(
+                'assets/svg/cart_fast.svg',
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
             ),
           )),
     );

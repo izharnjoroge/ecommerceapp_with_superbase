@@ -18,4 +18,14 @@ class ItemsCubit extends Cubit<ItemsState> {
       emit(ItemsError(e.toString()));
     }
   }
+
+  void searchItems(String name) async {
+    emit(SearchLoading());
+    try {
+      List<ItemModel> itemModel = await itemsRepo.getItemsByName(name);
+      emit(SearchLoaded(itemModel));
+    } catch (e) {
+      emit(SearchError(e.toString()));
+    }
+  }
 }

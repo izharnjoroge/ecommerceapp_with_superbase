@@ -18,3 +18,17 @@ final class ItemsError extends ItemsState {
 
   ItemsError(this.error);
 }
+
+final class SearchLoading extends ItemsState {}
+
+final class SearchLoaded extends ItemsState {
+  final List<ItemModel> itemModel;
+
+  SearchLoaded(this.itemModel);
+}
+
+final class SearchError extends ItemsState {
+  final String error;
+
+  SearchError(this.error);
+}

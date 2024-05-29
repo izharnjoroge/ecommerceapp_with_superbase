@@ -1,9 +1,6 @@
 import 'dart:developer';
 
 import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
-import 'package:ecommerceapp/blocs/itemsBloc/items_cubit.dart';
-import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
-import 'package:ecommerceapp/repos/itemsRepo/items_repo.dart';
 import 'package:ecommerceapp/screens/widgets/items_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,17 +16,7 @@ class CategoryBLoc extends StatefulWidget {
 class _CategoryBLocState extends State<CategoryBLoc> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => CategoryCubit(CategoryRepo()),
-        ),
-        BlocProvider(
-          create: (context) => ItemsCubit(ItemsRepo()),
-        ),
-      ],
-      child: const CategoryContent(),
-    );
+    return const CategoryContent();
   }
 }
 
