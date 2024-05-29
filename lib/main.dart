@@ -1,11 +1,9 @@
-import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:ecommerceapp/screens/landing%20page/splash_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -47,7 +47,7 @@ class _LandingPageState extends State<LandingPage> {
                   ],
                 ),
                 SizedBox(
-                    height: size.height * .65, child: const CategoryBLoc()),
+                    height: size.height * .75, child: const CategoryBLoc()),
                 const Gap(10),
                 // Expanded(
                 //   child: SizedBox(

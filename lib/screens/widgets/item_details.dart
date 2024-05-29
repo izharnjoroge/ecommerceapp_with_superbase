@@ -4,6 +4,7 @@ import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -44,25 +45,21 @@ class ItemDetails extends StatelessWidget {
                     child: SvgPicture.network(itemModel.image)),
                 Column(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          itemModel.name,
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.clip,
-                        ),
-                      ],
+                    Text(
+                      itemModel.name,
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          itemModel.description,
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.clip,
-                        ),
-                      ],
+                    const Gap(10),
+                    Text(
+                      itemModel.description,
+                      softWrap: true,
                     ),
                   ],
                 ),
@@ -93,7 +90,7 @@ class ItemDetails extends StatelessWidget {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.black)),
                           onPressed: () {
-                            // context.read<CartProvider>().addToCart(itemModel);
+                            context.read<CartProvider>().addToCart(itemModel);
                           },
                           child: const Row(
                             children: [
@@ -113,14 +110,13 @@ class ItemDetails extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.purple,
           onPressed: () {
             Get.to(() => const CartPage());
           },
           child: SvgPicture.asset(
             'assets/svg/cart_fast.svg',
-            colorFilter:
-                const ColorFilter.mode(Colors.yellowAccent, BlendMode.srcIn),
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
           ),
         ));
   }

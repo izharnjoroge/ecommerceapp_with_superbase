@@ -30,6 +30,14 @@ class CartProvider extends ChangeNotifier {
   double getTotal() {
     double total = 0.0;
 
+    // Iterate over each item in the cart and sum up their prices
+    for (var item in _ItemModel) {
+      // Parse the amount string to extract the numeric value
+      double price =
+          double.tryParse(item.amount.replaceAll('KSH', '').trim()) ?? 0.0;
+      total += price;
+    }
+
     return total;
   }
 }

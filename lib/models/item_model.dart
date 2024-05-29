@@ -31,4 +31,9 @@ class ItemModel {
       categoryId: json['categoryId'] as String,
     );
   }
+
+  @override
+  String toString() {
+    return 'ItemModel(id: $item_id, name: $name, image: $image, price: $amount)';
+  }
 }

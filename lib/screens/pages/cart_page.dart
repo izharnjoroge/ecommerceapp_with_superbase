@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
@@ -11,8 +13,9 @@ class CartPage extends StatelessWidget {
   const CartPage({super.key});
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     List<ItemModel> Item = context.watch<CartProvider>().itemData;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -44,7 +47,7 @@ class CartPage extends StatelessWidget {
                             leading: SizedBox(
                                 height: 50,
                                 width: 50,
-                                child: Image.network(
+                                child: SvgPicture.network(
                                   Item[index].image,
                                   fit: BoxFit.cover,
                                 )),

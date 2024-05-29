@@ -1,6 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
+
 import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
+import 'package:ecommerceapp/blocs/itemsBloc/items_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
+import 'package:ecommerceapp/repos/itemsRepo/items_repo.dart';
 import 'package:ecommerceapp/screens/widgets/items_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +19,15 @@ class CategoryBLoc extends StatefulWidget {
 class _CategoryBLocState extends State<CategoryBLoc> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CategoryCubit(CategoryRepo()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CategoryCubit(CategoryRepo()),
+        ),
+        BlocProvider(
+          create: (context) => ItemsCubit(ItemsRepo()),
+        ),
+      ],
       child: const CategoryContent(),
     );
   }
@@ -32,6 +42,7 @@ class CategoryContent extends StatefulWidget {
 
 class _CategoryContentState extends State<CategoryContent> {
   String selectedID = '';
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +51,8 @@ class _CategoryContentState extends State<CategoryContent> {
 
   @override
   Widget build(BuildContext context) {
+    log('here; $selectedID');
+
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
         if (state is CategoryLoading) {
@@ -86,7 +99,11 @@ class _CategoryContentState extends State<CategoryContent> {
                     padding: const EdgeInsets.only(top: 10),
                     child: TabBarView(
                       children: state.categoryModel.map((category) {
-                        return ItemsBloc(categoryId: selectedID);
+                        return ItemsBloc(
+                          categoryId: selectedID == ''
+                              ? state.categoryModel[0].category_id
+                              : selectedID,
+                        );
                       }).toList(),
                     ),
                   ),
