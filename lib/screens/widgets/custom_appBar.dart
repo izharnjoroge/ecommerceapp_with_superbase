@@ -1,13 +1,13 @@
 import 'package:ecommerceapp/screens/pages/searchPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const CustomAppBar({super.key, required this.scaffoldKey});
 
   @override
-  Size get preferredSize => const Size.fromHeight(80.0);
+  Size get preferredSize => const Size.fromHeight(90.0);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         backgroundColor: Colors.purple,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
             icon: const Icon(
               Icons.menu,
               color: Colors.white,
@@ -44,7 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 class AppBarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    double curveHeight = size.height / 1.6;
+    double curveHeight = size.height / 1.7;
     var p = Path()
       ..lineTo(0, size.height)
       ..quadraticBezierTo(0, curveHeight, curveHeight, curveHeight)
@@ -76,8 +78,8 @@ class SplashAppBar extends StatelessWidget implements PreferredSizeWidget {
           clipper: Customshape(),
           child: SizedBox(
             height: 490,
-           // child: Lottie.asset(
-             // "assets/lotties/robot.json",
+            // child: Lottie.asset(
+            // "assets/lotties/robot.json",
             //),
           ),
         ),

@@ -70,9 +70,9 @@ class CartPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                // ItemCount(
-                                //   ItemModel: Item[index],
-                                // ),
+                                ItemCount(
+                                  productModel: Item[index],
+                                ),
                               ],
                             ),
                             trailing: IconButton(
@@ -127,28 +127,31 @@ class CartPage extends StatelessWidget {
                       )
                     ],
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: Colors.white,
-                            width: 2,
-                            style: BorderStyle.solid)),
-                    padding: const EdgeInsets.all(12),
-                    child: const Row(
-                      children: [
-                        Text(
-                          'Pay Now',
-                          style: TextStyle(
-                            color: Colors.white,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      padding: const EdgeInsets.all(12),
+                      child: const Row(
+                        children: [
+                          Text(
+                            'Order Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          color: Colors.white,
-                          size: 16,
-                        )
-                      ],
+                          Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color: Colors.white,
+                            size: 16,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

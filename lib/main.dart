@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'blocs/categoryBloc/category_cubit.dart';
 import 'blocs/itemsBloc/items_cubit.dart';
 import 'repos/itemsRepo/items_repo.dart';

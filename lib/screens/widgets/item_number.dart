@@ -1,10 +1,11 @@
+import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ItemCount extends StatefulWidget {
-  final ProductModel productModel;
+  final ItemModel productModel;
   const ItemCount({super.key, required this.productModel});
 
   @override

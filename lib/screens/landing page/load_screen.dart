@@ -4,6 +4,7 @@ import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
+import 'package:ecommerceapp/screens/pages/drawer_page.dart';
 import 'package:ecommerceapp/screens/widgets/banner_bloc.dart';
 import 'package:ecommerceapp/screens/widgets/category_bloc.dart';
 import 'package:ecommerceapp/screens/widgets/custom_appBar.dart';
@@ -22,6 +23,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,8 +31,10 @@ class _LandingPageState extends State<LandingPage> {
 
     return SafeArea(
       child: Scaffold(
+          key: _scaffoldKey,
           resizeToAvoidBottomInset: false,
-          appBar: const CustomAppBar(),
+          appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
+          drawer: const DrawerPage(),
           body: Padding(
             padding: const EdgeInsets.all(15.0),
             child: SingleChildScrollView(
@@ -55,44 +59,22 @@ class _LandingPageState extends State<LandingPage> {
                 SizedBox(
                     height: size.height * .75, child: const CategoryBLoc()),
                 const Gap(10),
-                // Expanded(
-                //   child: SizedBox(
-                //       height: size.height * .45,
-                //       child: GridView.builder(
-                //         itemCount: list.length,
-                //         padding: const EdgeInsets.all(12),
-                //         gridDelegate:
-                //             const SliverGridDelegateWithFixedCrossAxisCount(
-                //                 crossAxisSpacing: 5,
-                //                 mainAxisSpacing: 5,
-                //                 mainAxisExtent: 250,
-                //                 crossAxisCount: 2),
-                //         itemBuilder: (context, index) {
-                //           return Padding(
-                //             padding: const EdgeInsets.only(bottom: 10.0),
-                //             child: ItemTile(
-                //               productModel: list[index],
-                //             ),
-                //           );
-                //         },
-                //       )),
-                // ),
               ]),
             ),
           ),
           floatingActionButton: badges.Badge(
             badgeContent: Text(
               ' ${Item.length.toString()}',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
             ),
             position: badges.BadgePosition.topEnd(top: -10, end: -12),
-            badgeAnimation: badges.BadgeAnimation.slide(
+            badgeAnimation: const badges.BadgeAnimation.slide(
               loopAnimation: false,
             ),
-            badgeStyle: badges.BadgeStyle(badgeColor: Colors.red),
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.red),
             showBadge: true,
             child: FloatingActionButton(
               backgroundColor: Colors.purple,
