@@ -7,17 +7,20 @@ class ItemModel {
   final String amount;
   final String rating;
   final String categoryId;
+  int? quantity = 0;
+  int? newAmount = 0;
 
-  ItemModel({
-    required this.item_id,
-    required this.created_at,
-    required this.name,
-    required this.description,
-    required this.image,
-    required this.amount,
-    required this.rating,
-    required this.categoryId,
-  });
+  ItemModel(
+      {required this.item_id,
+      required this.created_at,
+      required this.name,
+      required this.description,
+      required this.image,
+      required this.amount,
+      required this.rating,
+      required this.categoryId,
+      this.quantity,
+      this.newAmount});
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
@@ -34,6 +37,6 @@ class ItemModel {
 
   @override
   String toString() {
-    return 'ItemModel(id: $item_id, name: $name, image: $image, price: $amount)';
+    return 'ItemModel(id: $item_id, name: $name, image: $image, price: $amount,quantity: $quantity)';
   }
 }

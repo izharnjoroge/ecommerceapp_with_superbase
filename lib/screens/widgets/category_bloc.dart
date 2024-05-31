@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
 import 'package:ecommerceapp/screens/widgets/items_bloc.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +36,6 @@ class _CategoryContentState extends State<CategoryContent> {
 
   @override
   Widget build(BuildContext context) {
-    log('here; $selectedID');
-
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
         if (state is CategoryLoading) {

@@ -1,29 +1,44 @@
+import 'dart:developer';
+
 import 'package:ecommerceapp/models/item_model.dart';
 import 'package:flutter/material.dart';
 
 class CartProvider extends ChangeNotifier {
   final List<ItemModel> _ItemModel = [];
 
-  get itemData => _ItemModel;
+  List<ItemModel> get itemData => _ItemModel;
 
   void addToCart(ItemModel item) {
-    if (!_ItemModel.contains(item)) {
+    int existingIndex = _ItemModel.indexWhere((p) => p.item_id == item.item_id);
+    if (existingIndex == -1) {
       _ItemModel.add(item);
-      notifyListeners();
     }
+    notifyListeners();
   }
 
-  // void increaseItemCart(ItemModel item) {
-  //   // Check if the item is already in the cart
-  //   int existingIndex = _ItemModel.indexWhere((p) => p.name == item.name);
-  //   if (existingIndex != -1) {
-  //     _ItemModel[existingIndex].quantity += item.quantity;
-  //     notifyListeners();
-  //   }
-  // }
+  void increaseItemCart(ItemModel item) {
+    int existingIndex = _ItemModel.indexWhere((p) => p.item_id == item.item_id);
+    if (existingIndex != -1) {
+      _ItemModel[existingIndex].quantity =
+          (_ItemModel[existingIndex].quantity ?? 1) + 1;
+    } else {
+      _ItemModel.add(item);
+    }
+    notifyListeners();
+  }
+
+  void decreaseItemCart(ItemModel item) {
+    int existingIndex = _ItemModel.indexWhere((p) => p.item_id == item.item_id);
+    if (existingIndex != -1 && (_ItemModel[existingIndex].quantity ?? 1) > 1) {
+      _ItemModel[existingIndex].quantity =
+          (_ItemModel[existingIndex].quantity ?? 1) - 1;
+      notifyListeners();
+    }
+    notifyListeners();
+  }
 
   void removeFromCart(ItemModel item) {
-    _ItemModel.remove(item);
+    _ItemModel.removeWhere((p) => p.item_id == item.item_id);
     notifyListeners();
   }
 
@@ -34,12 +49,12 @@ class CartProvider extends ChangeNotifier {
   double getTotal() {
     double total = 0.0;
 
-    // Iterate over each item in the cart and sum up their prices
     for (var item in _ItemModel) {
-      // Parse the amount string to extract the numeric value
-      double price =
-          double.tryParse(item.amount.replaceAll('KSH', '').trim()) ?? 0.0;
-      total += price;
+      double price = double.tryParse(
+              item.amount.replaceAll('KSH', '').replaceAll(',', '').trim()) ??
+          0.0;
+
+      total += price * (item.quantity ?? 1);
     }
 
     return total;

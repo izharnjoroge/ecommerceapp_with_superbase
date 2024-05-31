@@ -1,5 +1,6 @@
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
-import 'package:ecommerceapp/screens/landing%20page/splash_screen.dart';
+import 'package:ecommerceapp/screens/auth/signIn.dart';
+import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,7 +22,7 @@ main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
   initSupaBase();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 Future<void> initSupaBase() async {
@@ -32,10 +33,13 @@ Future<void> initSupaBase() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final supabase = Supabase.instance.client;
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Session? session = supabase.auth.currentSession;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -48,11 +52,14 @@ class MyApp extends StatelessWidget {
       child: ChangeNotifierProvider(
         create: (context) => CartProvider(),
         child: GetMaterialApp(
-          navigatorKey: NavigationService.navigatorKey,
-          debugShowCheckedModeBanner: false,
-          title: 'Ecommerce App',
-          home: const SplashScreen(),
-        ),
+            navigatorKey: NavigationService.navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: 'Ecommerce App',
+            home: session != null
+                ? session.isExpired
+                    ? const LoginScreen()
+                    : const LandingPage()
+                : const LoginScreen()),
       ),
     );
   }

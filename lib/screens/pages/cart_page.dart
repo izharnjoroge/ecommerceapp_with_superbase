@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:ecommerceapp/models/item_model.dart';
-import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/widgets/item_number.dart';
 import 'package:flutter/material.dart';
@@ -36,53 +33,41 @@ class CartPage extends StatelessWidget {
                 height: size.height * .85,
                 child: ListView.builder(
                     itemCount: Item.length,
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(5),
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ListTile(
-                            leading: SizedBox(
-                                height: 50,
-                                width: 50,
-                                child: SvgPicture.network(
-                                  Item[index].image,
-                                  fit: BoxFit.cover,
-                                )),
-                            title: Text(Item[index].name),
-                            subtitle: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    //     SvgPicture.asset(
-                                    //       'assets/dollar.svg',
-                                    //       colorFilter: const ColorFilter.mode(
-                                    //           Colors.black, BlendMode.srcIn),
-                                    //       height: 20,
-                                    //     ),
-                                    Text(
-                                      Item[index].amount.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                ItemCount(
-                                  productModel: Item[index],
-                                ),
-                              ],
-                            ),
-                            trailing: IconButton(
-                                onPressed: () {
-                                  context
-                                      .read<CartProvider>()
-                                      .removeFromCart(Item[index]);
-                                },
-                                icon: const Icon(Icons.delete)),
+                      return Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: ListTile(
+                          leading: SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: SvgPicture.network(
+                                Item[index].image,
+                                fit: BoxFit.cover,
+                              )),
+                          title: Text(Item[index].name),
+                          subtitle: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    Item[index].amount.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
+                          trailing: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<CartProvider>()
+                                    .removeFromCart(Item[index]);
+                              },
+                              icon: const Icon(Icons.delete)),
                         ),
                       );
                     }),
@@ -93,7 +78,7 @@ class CartPage extends StatelessWidget {
               height: size.height * .1,
               width: size.width,
               decoration: BoxDecoration(
-                color: Colors.greenAccent,
+                color: Colors.purpleAccent,
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.all(10),
@@ -105,22 +90,22 @@ class CartPage extends StatelessWidget {
                       const Text(
                         'Total: ',
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       const Gap(10),
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/svg/dollar.svg',
-                            colorFilter: const ColorFilter.mode(
-                                Colors.black, BlendMode.srcIn),
-                            height: 20,
+                          const Text(
+                            'KSH',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           const Gap(10),
                           Text(
-                            ' ${context.read<CartProvider>().getTotal().toString()}',
+                            ' ${context.read<CartProvider>().getTotal().toDouble().toString()}',
                             style: const TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

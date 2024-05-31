@@ -1,10 +1,12 @@
+import 'package:ecommerceapp/repos/auth/auth.dart';
+import 'package:ecommerceapp/screens/auth/signIn.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DrawerPage extends StatefulWidget {
-  const DrawerPage({super.key});
+  const DrawerPage({Key? key}) : super(key: key);
 
   @override
   State<DrawerPage> createState() => _DrawerPageState();
@@ -12,20 +14,27 @@ class DrawerPage extends StatefulWidget {
 
 class _DrawerPageState extends State<DrawerPage> {
   final supabase = Supabase.instance.client;
+  final Auth auth = Auth();
 
   @override
   Widget build(BuildContext context) {
-    final User? user = supabase.auth.currentUser;
+    final user = supabase.auth.currentUser;
+
+    String username = "User";
+    if (user?.email != null) {
+      username = extractUsername(user!.email!);
+    }
+
     return Drawer(
       child: Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: const Text("User"),
-            accountEmail: Text("${user?.email}"),
+            accountName: Text('Welcome , $username'),
+            accountEmail: Text(user?.email ?? ''),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Text(
-                "${user?.email?.substring(0, 2).capitalize}",
+                user?.email?.substring(0, 2).toUpperCase() ?? '',
                 style: const TextStyle(fontSize: 40.0),
               ),
             ),
@@ -58,12 +67,29 @@ class _DrawerPageState extends State<DrawerPage> {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Log Out'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
+            onTap: () async {
+              await auth.signOut();
+              Get.offAll(() => const LoginScreen());
             },
           ),
         ],
       ),
     );
   }
+}
+
+// Function to extract and format username from email
+String extractUsername(String email) {
+  final localPart = email.split('@')[0];
+  final formattedPart = localPart.replaceAll(RegExp(r'[\._\-]'), ' ');
+  final words = formattedPart.split(' ');
+
+  final capitalizedWords = words.map((word) {
+    if (word.isNotEmpty) {
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }
+    return '';
+  });
+
+  return capitalizedWords.join(' ');
 }

@@ -192,10 +192,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         responce =
                                             await auth.signIn(email, password);
                                         if (responce == 'Success') {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-
                                           Get.offAll(() => const LandingPage());
 
                                           Get.snackbar(responce, '',

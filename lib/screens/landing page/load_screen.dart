@@ -1,7 +1,4 @@
-import 'package:ecommerceapp/models/carousel_model.dart';
-import 'package:ecommerceapp/models/category_model.dart';
 import 'package:ecommerceapp/models/item_model.dart';
-import 'package:ecommerceapp/models/product_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
 import 'package:ecommerceapp/screens/pages/drawer_page.dart';
@@ -35,31 +32,33 @@ class _LandingPageState extends State<LandingPage> {
           resizeToAvoidBottomInset: false,
           appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
           drawer: const DrawerPage(),
-          body: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              child: Column(children: [
-                SizedBox(
-                  height: size.height * .25,
-                  child: const CarouselBLoc(),
-                ),
-                const Gap(20),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Categories',
-                      style: TextStyle(
-                          color: Colors.purple,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                    height: size.height * .75, child: const CategoryBLoc()),
-                const Gap(10),
-              ]),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  SizedBox(
+                    height: size.height * .25,
+                    child: const CarouselBLoc(),
+                  ),
+                  const Gap(20),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Categories',
+                        style: TextStyle(
+                            color: Colors.purple,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      height: size.height * .75, child: const CategoryBLoc()),
+                  const Gap(10),
+                ]),
+              ),
             ),
           ),
           floatingActionButton: badges.Badge(
