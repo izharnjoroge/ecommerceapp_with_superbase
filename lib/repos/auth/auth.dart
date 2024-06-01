@@ -4,17 +4,20 @@ class Auth {
   final supabase = Supabase.instance.client;
 
   Future<String> signUp(
-      String userEmail, String password, String username) async {
+    String userEmail,
+    String password,
+    String? username,
+    String phone,
+  ) async {
     try {
-      final AuthResponse res = await supabase.auth.signUp(
-        // phone: phone,
+      await supabase.auth.signUp(
         email: userEmail,
         password: password,
-        data: {'username': username},
+        data: {
+          'username': username,
+          'phone': phone,
+        },
       );
-      // final Session? session = res.session;
-      // final User? user = res.user;
-
       return 'Welcome';
     } catch (e) {
       return e.toString();
@@ -23,12 +26,10 @@ class Auth {
 
   Future<String> signIn(String email, String password) async {
     try {
-      final AuthResponse res = await supabase.auth.signInWithPassword(
+      await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      // final Session? session = res.session;
-      // final User? user = res.user;
       return 'Success';
     } catch (e) {
       return e.toString();
@@ -41,29 +42,45 @@ class Auth {
     );
   }
 
-  Future<String> veryfyOtp(String otp, String phone) async {
-    final AuthResponse res = await supabase.auth.verifyOTP(
-      type: OtpType.sms,
-      token: otp,
-      phone: phone,
-    );
-    // final Session? session = res.session;
-    // final User? user = res.user;
-
-    if (res == '200') {
+  Future<String> verifyOtp(String otp, String phone) async {
+    try {
+      await supabase.auth.verifyOTP(
+        type: OtpType.sms,
+        token: otp,
+        phone: phone,
+      );
       return 'success';
+    } catch (e) {
+      return e.toString();
     }
-    return 'failed';
   }
 
-  Future<void> resendOtp(String phone) async {
-    final ResendResponse res = await supabase.auth.resend(
-      type: OtpType.sms,
-      phone: phone,
-    );
+  Future<String> resendOtp(String phone) async {
+    // final ResendResponse res = await supabase.auth.resend(
+    //   type: OtpType.sms,
+    //   phone: phone,
+    // )
+    try {
+      await supabase.auth.resend(
+        type: OtpType.sms,
+        phone: phone,
+      );
+      return 'success';
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<void> signOut() async {
     await supabase.auth.signOut();
+  }
+
+  Future<String> forgotPassword(String email) async {
+    try {
+      await supabase.auth.resetPasswordForEmail(email);
+      return 'Success';
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

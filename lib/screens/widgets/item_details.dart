@@ -20,7 +20,7 @@ class ItemDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: 1,
         title: const Text(
           'Description',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -43,7 +43,7 @@ class ItemDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: size.height * 0.6,
+                    height: size.height * 0.4,
                     width: size.width - 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,

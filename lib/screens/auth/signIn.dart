@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/screens/auth/forgotPassword.dart';
 import 'package:ecommerceapp/screens/auth/signUp.dart';
 import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
-  String responce = '';
+  String response = '';
   bool isLoading = false;
 
   @override
@@ -146,78 +147,73 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                height: size.height * .05,
-                                width: size.width * .3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.purple,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: GestureDetector(
-                                    onTap: () async {
+                              GestureDetector(
+                                onTap: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+
+                                  if (_emailController.text.isEmpty ||
+                                      _passwordController.text.isEmpty) {
+                                    Get.snackbar(
+                                        "Error", "Please fill all the fields",
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        isDismissible: true,
+                                        duration: const Duration(seconds: 3));
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else if (!_loginFormKey.currentState!
+                                      .validate()) {
+                                    Get.snackbar("Error",
+                                        "Please fill all the fields correctly",
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        isDismissible: true,
+                                        duration: const Duration(seconds: 3));
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else {
+                                    final email = _emailController.text;
+                                    final password = _passwordController.text;
+                                    response =
+                                        await auth.signIn(email, password);
+                                    if (response == 'Success') {
+                                      Get.offAll(() => const LandingPage());
+
+                                      Get.snackbar('Welcome Back', '',
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          isDismissible: true,
+                                          duration: const Duration(seconds: 3));
+                                    } else {
                                       setState(() {
-                                        isLoading = true;
+                                        isLoading = false;
                                       });
-
-                                      if (_emailController.text.isEmpty ||
-                                          _passwordController.text.isEmpty) {
-                                        Get.snackbar("Error",
-                                            "Please fill all the fields",
-                                            backgroundColor: Colors.red,
-                                            colorText: Colors.white,
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            isDismissible: true,
-                                            duration:
-                                                const Duration(seconds: 3));
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                      } else if (!_loginFormKey.currentState!
-                                          .validate()) {
-                                        Get.snackbar("Error",
-                                            "Please fill all the fields correctly",
-                                            backgroundColor: Colors.red,
-                                            colorText: Colors.white,
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            isDismissible: true,
-                                            duration:
-                                                const Duration(seconds: 3));
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                      } else {
-                                        final email = _emailController.text;
-                                        final password =
-                                            _passwordController.text;
-                                        responce =
-                                            await auth.signIn(email, password);
-                                        if (responce == 'Success') {
-                                          Get.offAll(() => const LandingPage());
-
-                                          Get.snackbar(responce, '',
-                                              backgroundColor: Colors.green,
-                                              colorText: Colors.white,
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                              isDismissible: true,
-                                              duration:
-                                                  const Duration(seconds: 3));
-                                        } else {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Get.snackbar(responce, '',
-                                              backgroundColor: Colors.red,
-                                              colorText: Colors.white,
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                              isDismissible: true,
-                                              duration:
-                                                  const Duration(seconds: 3));
-                                          Get.back();
-                                        }
-                                      }
-                                    },
+                                      Get.snackbar('An error occurred',
+                                          'Please try again',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          isDismissible: true,
+                                          duration: const Duration(seconds: 3));
+                                      Get.back();
+                                    }
+                                  }
+                                },
+                                child: SizedBox(
+                                  height: size.height * .05,
+                                  width: size.width * .3,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.purple,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
                                     child: isLoading
                                         ? const Center(
                                             child: CircularProgressIndicator(
@@ -236,15 +232,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.bold),
+                              GestureDetector(
+                                onTap: () =>
+                                    Get.to(() => const ForgotPassword()),
+                                child: const Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                      color: Colors.purple,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ],
                           ),
-                          const Spacer(),
+                          const Gap(50),
                           TextButton(
                             onPressed: () {
                               Get.to(() => const SignUp());
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 selectionColor: Colors.grey,
                                 text: const TextSpan(children: [
                                   TextSpan(
-                                      text: 'Dont have an account?  ',
+                                      text: "Don't have an account?  ",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold)),

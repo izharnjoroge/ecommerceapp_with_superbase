@@ -1,6 +1,7 @@
 import 'package:ecommerceapp/repos/auth/auth.dart';
 import 'package:ecommerceapp/screens/auth/signIn.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
+import 'package:ecommerceapp/screens/pages/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -43,10 +44,10 @@ class _DrawerPageState extends State<DrawerPage> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
+            leading: const Icon(Icons.bookmark),
+            title: const Text('My Orders'),
             onTap: () {
-              Navigator.pop(context);
+              Get.to(() => const MyOrders());
             },
           ),
           ListTile(

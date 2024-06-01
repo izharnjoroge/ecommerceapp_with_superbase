@@ -1,4 +1,6 @@
+import 'package:ecommerceapp/blocs/orderBloc/order_bloc_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
+import 'package:ecommerceapp/repos/orderRepo/order_repo.dart';
 import 'package:ecommerceapp/screens/auth/signIn.dart';
 import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/services.dart';
@@ -48,13 +50,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ItemsCubit(ItemsRepo()),
         ),
+        BlocProvider(
+          create: (context) => OrderCubit(OrderRepo()),
+        ),
       ],
       child: ChangeNotifierProvider(
         create: (context) => CartProvider(),
         child: GetMaterialApp(
             navigatorKey: NavigationService.navigatorKey,
             debugShowCheckedModeBanner: false,
-            title: 'Ecommerce App',
+            title: 'E-Commerce App',
             home: session != null
                 ? session.isExpired
                     ? const LoginScreen()
