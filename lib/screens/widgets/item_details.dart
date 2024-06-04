@@ -36,9 +36,10 @@ class ItemDetails extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: 50),
+          padding: const EdgeInsets.only(bottom: 50),
           child: Column(
             children: [
+              const Gap(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -94,9 +95,9 @@ class ItemDetails extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.purple,
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
                     Row(

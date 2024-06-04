@@ -8,6 +8,8 @@ class Auth {
     String password,
     String? username,
     String phone,
+    String? area,
+    String? street,
   ) async {
     try {
       await supabase.auth.signUp(
@@ -16,6 +18,8 @@ class Auth {
         data: {
           'username': username,
           'phone': phone,
+          'area': area ?? '',
+          'street': street ?? ''
         },
       );
       return 'Welcome';

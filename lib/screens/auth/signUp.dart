@@ -1,10 +1,10 @@
-import 'dart:typed_data';
+import 'package:ecommerceapp/models/location_model.dart';
 import 'package:ecommerceapp/repos/auth/auth.dart';
+import 'package:ecommerceapp/repos/locationRepo/location_repo.dart';
 import 'package:ecommerceapp/screens/landing%20page/load_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -15,17 +15,22 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final Auth auth = Auth();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
   final _signUpFormKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
-  Uint8List? _pickedFile;
+
   String response = '';
   bool isLoading = false;
   bool _isPasswordVisible = false;
+
+  final LocationRepo _locationRepo = LocationRepo();
+  List<ListLocationModel> _locations = [];
+  ListLocationModel? _selectedLocation;
+  String? _selectedStreet;
 
   @override
   void dispose() {
@@ -69,27 +74,6 @@ class _SignUpState extends State<SignUp> {
     return null;
   }
 
-  void _getImageFromGallery() async {
-    XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      Uint8List photo = await pickedFile.readAsBytes();
-      setState(() {
-        _pickedFile = photo;
-      });
-    }
-  }
-
-  void _takePhoto() async {
-    XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      Uint8List photo = await pickedFile.readAsBytes();
-      setState(() {
-        _pickedFile = photo;
-      });
-    }
-  }
-
   void _signUp() async {
     setState(() {
       isLoading = true;
@@ -111,10 +95,10 @@ class _SignUpState extends State<SignUp> {
       final name = _nameController.text;
       final phone = _phoneController.text;
 
-      response = await auth.signUp(email, password, name, phone);
+      response = await auth.signUp(email, password, name, phone,
+          _selectedLocation?.area, _selectedStreet);
 
       if (response == 'Welcome') {
-        // Get.to(() => VerifyOtp(phone: phone));
         Get.offAll(() => const LandingPage());
         Get.snackbar('Welcome', '',
             backgroundColor: Colors.green,
@@ -141,6 +125,29 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _isPasswordVisible = !_isPasswordVisible;
     });
+  }
+
+  @override
+  void initState() {
+    _getLocations();
+    super.initState();
+  }
+
+  _getLocations() async {
+    try {
+      final locations = await _locationRepo.getLocations();
+      setState(() {
+        _locations = locations;
+      });
+    } catch (e) {
+      Get.back();
+      Get.snackbar('An error occurred', 'Please try again',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          isDismissible: true,
+          duration: const Duration(seconds: 3));
+    }
   }
 
   @override
@@ -173,66 +180,6 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Gap(20),
-                      // Stack(
-                      //   alignment: Alignment.center,
-                      //   children: [
-                      //     CircleAvatar(
-                      //       radius: 100,
-                      //       backgroundColor: Colors.grey.shade300,
-                      //       backgroundImage: _pickedFile != null
-                      //           ? MemoryImage(_pickedFile!)
-                      //           : null,
-                      //       child: _pickedFile == null
-                      //           ? const Icon(
-                      //               Icons.person_outline,
-                      //               size: 60,
-                      //               color: Colors.white,
-                      //             )
-                      //           : null,
-                      //     ),
-                      //     Positioned(
-                      //       bottom: 18,
-                      //       right: 10,
-                      //       child: Material(
-                      //         color: Colors.transparent,
-                      //         shape: const CircleBorder(),
-                      //         elevation: 4,
-                      //         child: CircleAvatar(
-                      //           backgroundColor: Colors.white,
-                      //           radius: 20,
-                      //           child: IconButton(
-                      //             icon: const Icon(
-                      //               Icons.file_upload,
-                      //               color: Colors.grey,
-                      //             ),
-                      //             onPressed: _getImageFromGallery,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     Positioned(
-                      //       bottom: 18,
-                      //       left: 16,
-                      //       child: Material(
-                      //         color: Colors.transparent,
-                      //         shape: const CircleBorder(),
-                      //         elevation: 4,
-                      //         child: CircleAvatar(
-                      //           backgroundColor: Colors.white,
-                      //           radius: 20,
-                      //           child: IconButton(
-                      //             icon: const Icon(
-                      //               Icons.camera,
-                      //               color: Colors.grey,
-                      //             ),
-                      //             onPressed: _takePhoto,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       const Gap(20),
                       TextFormField(
                         controller: _nameController,
@@ -293,6 +240,70 @@ class _SignUpState extends State<SignUp> {
                           validator: (val) {
                             return validatePhone(val ?? '');
                           }),
+                      const Gap(20),
+                      DropdownButtonFormField<ListLocationModel>(
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.location_city),
+                          iconColor: Colors.purple,
+                          labelText: 'Area',
+                          labelStyle: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple)),
+                        ),
+                        items: _locations.map((location) {
+                          return DropdownMenuItem(
+                            value: location,
+                            child: Text(location.area),
+                          );
+                        }).toList(),
+                        onChanged: (location) {
+                          setState(() {
+                            _selectedLocation = location;
+                            _selectedStreet = null; // Reset selected street
+                          });
+                        },
+                        value: _selectedLocation,
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an area';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Gap(20),
+                      if (_selectedLocation != null)
+                        DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.streetview),
+                            iconColor: Colors.purple,
+                            labelText: 'Street',
+                            labelStyle: TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.purple)),
+                          ),
+                          items: _selectedLocation!.streets.map((street) {
+                            return DropdownMenuItem(
+                              value: street,
+                              child: Text(street),
+                            );
+                          }).toList(),
+                          onChanged: (street) {
+                            setState(() {
+                              _selectedStreet = street;
+                            });
+                          },
+                          value: _selectedStreet,
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select a street';
+                            }
+                            return null;
+                          },
+                        ),
                       const Gap(20),
                       TextFormField(
                         controller: _passwordController,

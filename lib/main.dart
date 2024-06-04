@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommerceapp/blocs/orderBloc/order_bloc_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
 import 'package:ecommerceapp/repos/orderRepo/order_repo.dart';
@@ -23,7 +25,7 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
-  initSupaBase();
+  // initSupaBase();
   runApp(MyApp());
 }
 
@@ -35,37 +37,65 @@ Future<void> initSupaBase() async {
 }
 
 class MyApp extends StatelessWidget {
-  final supabase = Supabase.instance.client;
-
   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Session? session = supabase.auth.currentSession;
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => CategoryCubit(CategoryRepo()),
-        ),
-        BlocProvider(
-          create: (context) => ItemsCubit(ItemsRepo()),
-        ),
-        BlocProvider(
-          create: (context) => OrderCubit(OrderRepo()),
-        ),
-      ],
-      child: ChangeNotifierProvider(
-        create: (context) => CartProvider(),
-        child: GetMaterialApp(
-            navigatorKey: NavigationService.navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'E-Commerce App',
-            home: session != null
-                ? session.isExpired
-                    ? const LoginScreen()
-                    : const LandingPage()
-                : const LoginScreen()),
-      ),
+    return FutureBuilder<void>(
+      future: initSupaBase(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple,
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: Text('Failed to initialize '),
+              ),
+            ),
+          );
+        }
+        final supabase = Supabase.instance.client;
+        final Session? session = supabase.auth.currentSession;
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => CategoryCubit(CategoryRepo()),
+            ),
+            BlocProvider(
+              create: (context) => ItemsCubit(ItemsRepo()),
+            ),
+            BlocProvider(
+              create: (context) => OrderCubit(OrderRepo()),
+            ),
+          ],
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => CartProvider()),
+            ],
+            child: GetMaterialApp(
+                navigatorKey: NavigationService.navigatorKey,
+                debugShowCheckedModeBanner: false,
+                title: 'E-Commerce App',
+                home: session != null
+                    ? session.isExpired
+                        ? const LoginScreen()
+                        : const LandingPage()
+                    : const LoginScreen()),
+          ),
+        );
+      },
     );
   }
 }

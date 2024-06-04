@@ -13,7 +13,7 @@ class LocationModel {
 
   @override
   String toString() {
-    return 'ItemModel(street: $street, area: $area)';
+    return 'LocationModel(street: $street, area: $area)';
   }
 }
 
@@ -35,6 +35,6 @@ class ListLocationModel {
 
   @override
   String toString() {
-    return 'ItemModel(id: $id, area: $area, streets: $streets)';
+    return 'ListLocationModel(id: $id, area: $area, streets: $streets)';
   }
 }
