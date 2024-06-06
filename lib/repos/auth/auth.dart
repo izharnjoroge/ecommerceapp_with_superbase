@@ -28,11 +28,11 @@ class Auth {
     }
   }
 
-  Future<String> signIn(String email, String password) async {
+  Future<String> signIn(String email) async {
     try {
-      await supabase.auth.signInWithPassword(
+      await supabase.auth.signInWithOtp(
         email: email,
-        password: password,
+        shouldCreateUser: false,
       );
       return 'Success';
     } catch (e) {
@@ -46,14 +46,14 @@ class Auth {
     );
   }
 
-  Future<String> verifyOtp(String otp, String phone) async {
+  Future<String> verifyOtp(String otp, String email) async {
     try {
       await supabase.auth.verifyOTP(
-        type: OtpType.sms,
+        type: OtpType.email,
         token: otp,
-        phone: phone,
+        email: email,
       );
-      return 'success';
+      return 'verified';
     } catch (e) {
       return e.toString();
     }
@@ -79,10 +79,38 @@ class Auth {
     await supabase.auth.signOut();
   }
 
+  Future<String> deleteAccount() async {
+    try {
+      await supabase.functions.invoke('delete_user_account');
+      return 'successful';
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<String> forgotPassword(String email) async {
     try {
       await supabase.auth.resetPasswordForEmail(email);
       return 'Success';
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> updateUserDetails(
+    String? username,
+    String? phone,
+    String? area,
+    String? street,
+  ) async {
+    try {
+      await supabase.auth.updateUser(UserAttributes(data: {
+        'username': username ?? '',
+        'area': area ?? '',
+        'street': street ?? '',
+        'phone': phone ?? '',
+      }));
+      return 'updated';
     } catch (e) {
       return e.toString();
     }

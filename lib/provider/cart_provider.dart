@@ -42,6 +42,11 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearCart() {
+    _ItemModel.clear();
+    notifyListeners();
+  }
+
   int getItems() {
     return _ItemModel.length;
   }

@@ -2,6 +2,7 @@ import 'package:ecommerceapp/repos/auth/auth.dart';
 import 'package:ecommerceapp/screens/auth/signIn.dart';
 import 'package:ecommerceapp/screens/pages/cart_page.dart';
 import 'package:ecommerceapp/screens/pages/order_page.dart';
+import 'package:ecommerceapp/screens/pages/user_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,11 +21,12 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
     final user = supabase.auth.currentUser;
+    final userMetadata = user?.userMetadata;
 
-    String username = "User";
-    if (user?.email != null) {
-      username = extractUsername(user!.email!);
-    }
+    String username = userMetadata?['username'] ?? '';
+    // if (user?.email != null) {
+    //   username = extractUsername(user!.email!);
+    // }
 
     return Drawer(
       child: Column(
@@ -61,7 +63,7 @@ class _DrawerPageState extends State<DrawerPage> {
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pop(context);
+              Get.to(() => const UserSettings());
             },
           ),
           const Spacer(),

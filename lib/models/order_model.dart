@@ -36,3 +36,31 @@ class OrderModel {
     return 'ItemModel(id: $id, items: $items, amount: $amount, details: $details,completed: $completed)';
   }
 }
+
+class OrderModelSent {
+  final List<ItemModel> items;
+  final String amount;
+  final bool completed;
+  final LocationModel details;
+  final String userId;
+
+  OrderModelSent(
+      {required this.items,
+      required this.amount,
+      required this.completed,
+      required this.details,
+      required this.userId});
+
+  Map<String, dynamic> toJson() => {
+        'items': items.map((item) => item.toJson()).toList(),
+        'amount': amount,
+        'completed': completed,
+        'details': details.toJson(),
+        'user_id': userId
+      };
+
+  @override
+  String toString() {
+    return ' items: $items, amount: $amount, details: $details,completed: $completed,id:$userId)';
+  }
+}

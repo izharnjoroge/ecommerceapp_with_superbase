@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ecommerceapp/blocs/orderBloc/order_bloc_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
 import 'package:ecommerceapp/repos/orderRepo/order_repo.dart';
@@ -26,7 +24,7 @@ main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
   // initSupaBase();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> initSupaBase() async {
@@ -37,7 +35,7 @@ Future<void> initSupaBase() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

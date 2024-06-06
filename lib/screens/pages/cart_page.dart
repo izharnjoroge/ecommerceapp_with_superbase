@@ -1,13 +1,67 @@
+import 'dart:developer';
+
 import 'package:ecommerceapp/models/item_model.dart';
+import 'package:ecommerceapp/models/location_model.dart';
+import 'package:ecommerceapp/models/order_model.dart';
 import 'package:ecommerceapp/provider/cart_provider.dart';
-import 'package:ecommerceapp/screens/widgets/item_number.dart';
+import 'package:ecommerceapp/repos/orderRepo/order_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  final OrderRepo _orderRepo = OrderRepo();
+  final supabase = Supabase.instance.client;
+
+  _makeOrder(List<ItemModel> item) async {
+    final user = supabase.auth.currentUser;
+
+    log('user;${user?.userMetadata}');
+
+    LocationModel locationModel = LocationModel(area: '', street: '');
+
+    OrderModelSent orderModel = OrderModelSent(
+        items: item,
+        amount: context.read<CartProvider>().getTotal().toString(),
+        completed: false,
+        details: locationModel,
+        userId: user?.id ?? '');
+
+    log('model;$orderModel');
+    try {
+      await _orderRepo.sendOrder(orderModel);
+
+      if (mounted) {
+        context.read<CartProvider>().clearCart();
+      }
+
+      Get.snackbar('Order made successfully', '',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          isDismissible: true,
+          duration: const Duration(seconds: 3));
+    } catch (e) {
+      log('error;$e');
+      Get.snackbar('An error occurred', 'Please try again',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          isDismissible: true,
+          duration: const Duration(seconds: 3));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ItemModel> Item = context.watch<CartProvider>().itemData;
@@ -113,7 +167,9 @@ class CartPage extends StatelessWidget {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _makeOrder(Item);
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -145,31 +201,6 @@ class CartPage extends StatelessWidget {
           ],
         ),
       ),
-      // body: Consumer<CartProvider>(
-      //   builder: (context, value, child) {
-      //     return Column(
-      //       children: [
-      //         ListView.builder(
-      //             itemCount: value.ItemData.length,
-      //             padding: EdgeInsets.all(12),
-      //             itemBuilder: (context, index) {
-      //               return Padding(
-      //                 padding: const EdgeInsets.all(10.0),
-      //                 child: Container(
-      //                   decoration: BoxDecoration(
-      //                     color: Colors.grey[200],
-      //                     borderRadius: BorderRadius.circular(15)
-      //                   ),
-      //                   child: ListTile(
-      //                        leading: Image.asset(value.productData[index].),
-      //                   ),
-      //                 ),
-      //               )
-      //             })
-      //       ],
-      //     );
-      //   },
-      // ),
     );
   }
 }

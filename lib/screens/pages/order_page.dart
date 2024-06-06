@@ -49,6 +49,8 @@ class _MyOrdersState extends State<MyOrders> {
             );
           } else if (state is OrdersLoaded) {
             if (state.orderModel.isNotEmpty) {
+              state.orderModel
+                  .sort((a, b) => b.created_at.compareTo(a.created_at));
               return ListView.builder(
                 itemCount: state.orderModel.length,
                 itemBuilder: (context, index) {

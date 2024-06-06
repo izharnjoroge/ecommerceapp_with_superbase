@@ -1,6 +1,6 @@
 class LocationModel {
-  final String area;
-  final String street;
+  final String? area;
+  final String? street;
 
   LocationModel({required this.area, required this.street});
 
@@ -10,6 +10,8 @@ class LocationModel {
       area: json['area'] as String,
     );
   }
+
+  Map<String, dynamic> toJson() => {'area': area ?? '', 'street': street ?? ''};
 
   @override
   String toString() {

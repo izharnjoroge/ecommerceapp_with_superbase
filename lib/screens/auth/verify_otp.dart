@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
 import '../../repos/auth/auth.dart';
 import '../landing page/load_screen.dart';
 
 class VerifyOtp extends StatefulWidget {
-  final String phone;
-  VerifyOtp({super.key, required this.phone});
+  final String email;
+  VerifyOtp({super.key, required this.email});
 
   @override
   State<VerifyOtp> createState() => _VerifyOtpState();
@@ -28,9 +27,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
     super.dispose();
   }
 
-  String? validatePhone(String value) {
+  String? validateOTP(String value) {
     if (value.isEmpty) {
-      return 'Please enter the code sent to your phone';
+      return 'Please enter the code sent to your email';
+    }
+    if (value.length != 6) {
+      return 'Please enter a valid pin';
     }
     return null;
   }
@@ -53,16 +55,16 @@ class _VerifyOtpState extends State<VerifyOtp> {
     } else {
       final otp = _otpController.text;
 
-      response = await auth.verifyOtp(otp, widget.phone);
+      response = await auth.verifyOtp(otp, widget.email);
 
-      if (response == 'Welcome') {
+      if (response == 'verified') {
         Get.offAll(() => const LandingPage());
-        Get.snackbar(response, '',
+        Get.snackbar('Welcome Back', '',
             backgroundColor: Colors.green,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
             isDismissible: true,
-            duration: const Duration(seconds: 3));
+            duration: const Duration(seconds: 5));
       } else {
         setState(() {
           isLoading = false;
@@ -72,7 +74,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
             isDismissible: true,
-            duration: const Duration(seconds: 3));
+            duration: const Duration(seconds: 5));
       }
     }
   }
@@ -88,7 +90,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
         foregroundColor: Colors.black,
         automaticallyImplyLeading: true,
         title: const Text(
-          'Verify Phone Number',
+          'Enter OTP',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple),
         ),
         centerTitle: true,
@@ -112,20 +114,21 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       TextFormField(
                           controller: _otpController,
                           decoration: const InputDecoration(
-                              icon: Icon(Icons.phone),
+                              icon: Icon(Icons.message_outlined),
                               iconColor: Colors.purple,
-                              labelText: 'Phone Number',
+                              labelText: 'One Time Pin',
                               labelStyle: TextStyle(
                                   color: Colors.purple,
                                   fontWeight: FontWeight.bold),
-                              hintText: 'Enter your phone number',
+                              hintText:
+                                  'Enter the one time  pin sent to your email',
                               focusedBorder: UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.purple))),
                           keyboardType: TextInputType.number,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (val) {
-                            return validatePhone(val ?? '');
+                            return validateOTP(val ?? '');
                           }),
                       const Gap(20),
                       Row(
@@ -148,7 +151,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                       )
                                     : const Center(
                                         child: Text(
-                                          'Sign Up',
+                                          'Log In',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
