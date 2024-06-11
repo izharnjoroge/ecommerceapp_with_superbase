@@ -80,8 +80,8 @@ class _UserSettingsState extends State<UserSettings> {
     _phoneController.text = userMetadata?['phone'] ?? '';
 
     if (userMetadata != null) {
-      final userArea = userMetadata['area'];
-      final userStreet = userMetadata['street'];
+      final userArea = userMetadata['area'] ?? '';
+      final userStreet = userMetadata['street'] ?? '';
 
       if (userArea != null && userArea != '') {
         _selectedLocation = _locations.firstWhere(

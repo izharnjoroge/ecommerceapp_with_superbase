@@ -146,7 +146,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 child: isLoading
                                     ? const Center(
                                         child: CircularProgressIndicator(
-                                          color: Colors.purple,
+                                          color: Colors.white,
                                         ),
                                       )
                                     : const Center(

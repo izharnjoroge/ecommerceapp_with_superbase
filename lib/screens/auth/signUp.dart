@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
       });
     } catch (e) {
       Get.back();
-      Get.snackbar('An error occurred', 'Please try again',
+      Get.snackbar('An error occurred', 'Please try retry',
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,

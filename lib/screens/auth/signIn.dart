@@ -37,6 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!value.contains('@')) {
       return 'Please enter a valid email address';
     }
+    if (!value.contains('.')) {
+      return 'Please enter a valid email address';
+    }
     return null;
   }
 
@@ -142,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: isLoading
                                   ? const Center(
                                       child: CircularProgressIndicator(
-                                        color: Colors.purple,
+                                        color: Colors.white,
                                       ),
                                     )
                                   : const Center(

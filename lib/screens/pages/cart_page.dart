@@ -25,10 +25,16 @@ class _CartPageState extends State<CartPage> {
 
   _makeOrder(List<ItemModel> item) async {
     final user = supabase.auth.currentUser;
+    final userMetadata = user?.userMetadata;
 
-    log('user;${user?.userMetadata}');
+    final description =
+        (userMetadata?['phone'] ?? '') + (userMetadata?['username'] ?? '');
 
-    LocationModel locationModel = LocationModel(area: '', street: '');
+    final area = userMetadata?['area'] ?? '';
+    final street = userMetadata?['street'] ?? '';
+
+    LocationModel locationModel =
+        LocationModel(area: area, street: street, description: description);
 
     OrderModelSent orderModel = OrderModelSent(
         items: item,

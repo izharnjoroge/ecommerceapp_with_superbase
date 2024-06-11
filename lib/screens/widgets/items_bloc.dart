@@ -17,34 +17,33 @@ class ItemsBloc extends StatefulWidget {
 }
 
 class _ItemsBlocState extends State<ItemsBloc> {
-  @override
-  Widget build(BuildContext context) {
-    return ItemContent(
-      categoryId: widget.categoryId,
-    );
-  }
-}
+  final ScrollController _scrollController = ScrollController();
 
-class ItemContent extends StatefulWidget {
-  final String categoryId;
-  const ItemContent({super.key, required this.categoryId});
-
-  @override
-  State<ItemContent> createState() => _ItemContentState();
-}
-
-class _ItemContentState extends State<ItemContent> {
   @override
   void initState() {
     super.initState();
     context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
+    _scrollController.addListener(_onScroll);
   }
 
   @override
-  void didUpdateWidget(covariant ItemContent oldWidget) {
+  void didUpdateWidget(covariant ItemsBloc oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.categoryId != widget.categoryId) {
       context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.extentAfter < 200) {
+      context.read<ItemsCubit>().loadMoreItems(widget.categoryId);
     }
   }
 
@@ -56,72 +55,91 @@ class _ItemContentState extends State<ItemContent> {
           return const Center(
             child: CircularProgressIndicator(color: Colors.purple),
           );
-        } else if (state is ItemsLoaded) {
-          if (state.itemModel.isNotEmpty) {
-            return GridView.builder(
-              itemCount: state.itemModel.length,
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 250,
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => Get.to(
-                    () => ItemDetails(itemModel: state.itemModel[index]),
+        } else if (state is ItemsLoaded || state is ItemsLoadedMore) {
+          final items = state is ItemsLoaded
+              ? state.itemModel
+              : (state as ItemsLoadedMore).itemModelMore;
+          final isLoadingMore = state is ItemsLoadedMore && state.isLoadingMore;
+
+          if (items.isNotEmpty) {
+            return Stack(
+              children: [
+                GridView.builder(
+                  controller: _scrollController,
+                  itemCount: items.length,
+                  padding: const EdgeInsets.all(12),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    mainAxisExtent: 250,
+                    crossAxisCount: 2,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromARGB(255, 236, 236, 236),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => Get.to(
+                        () => ItemDetails(itemModel: items[index]),
                       ),
-                      padding: const EdgeInsets.all(2),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color.fromARGB(255, 236, 236, 236),
+                          ),
+                          padding: const EdgeInsets.all(2),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SvgPicture.network(
-                                state.itemModel[index].image,
-                                height: 150,
-                                fit: BoxFit.contain,
-                                alignment: Alignment.center,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.network(
+                                    items[index].image,
+                                    height: 150,
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.center,
+                                  ),
+                                ],
                               ),
+                              const Gap(10),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(items[index].name,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: Colors.purple,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start),
+                                    Text(items[index].amount,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.start),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
-                          const Gap(10),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(state.itemModel[index].name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: Colors.purple,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start),
-                                Text(state.itemModel[index].amount,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.start),
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
                       ),
+                    );
+                  },
+                ),
+                if (isLoadingMore)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.purple),
                     ),
                   ),
-                );
-              },
+              ],
             );
           } else {
             return const Center(child: Text('Nothing Here'));
