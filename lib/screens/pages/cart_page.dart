@@ -27,9 +27,9 @@ class _CartPageState extends State<CartPage> {
     final user = supabase.auth.currentUser;
     final userMetadata = user?.userMetadata;
 
-    final description =
-        (userMetadata?['phone'] ?? '') + (userMetadata?['username'] ?? '');
-
+    final phone = userMetadata?['phone'] ?? '';
+    final username = userMetadata?['username'] ?? '';
+    final description = phone + username;
     final area = userMetadata?['area'] ?? '';
     final street = userMetadata?['street'] ?? '';
 
