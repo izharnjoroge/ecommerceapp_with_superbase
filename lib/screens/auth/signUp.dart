@@ -111,7 +111,7 @@ class _SignUpState extends State<SignUp> {
           isLoading = false;
         });
 
-        Get.snackbar('An error occurred', 'Please try again',
+        Get.snackbar('An error occurred', 'Check your connection and try again',
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,

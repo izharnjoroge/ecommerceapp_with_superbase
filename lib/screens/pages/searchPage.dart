@@ -93,8 +93,9 @@ class _SearchPageState extends State<SearchPage> {
                       return const Center(child: Text('Nothing Here'));
                     }
                   } else if (state is SearchError) {
-                    return Center(
-                      child: Text(state.error),
+                    return const Center(
+                      child:
+                          Text('Please check your connection and try again.'),
                     );
                   } else {
                     return const Center(

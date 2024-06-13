@@ -62,7 +62,7 @@ class _UserSettingsState extends State<UserSettings> {
       _initializeUserDetails();
     } catch (e) {
       Get.back();
-      Get.snackbar('An error occurred', 'Please try again',
+      Get.snackbar('An error occurred', 'Check your connection and try again',
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
@@ -141,8 +141,8 @@ class _UserSettingsState extends State<UserSettings> {
       setState(() {
         isLoading = false;
       });
-      Get.snackbar(
-          'An error occurred', 'Unable to delete account. Please try again.',
+      Get.snackbar('An error occurred',
+          'Unable to delete account. Check your connection and try again.',
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
@@ -208,7 +208,7 @@ class _UserSettingsState extends State<UserSettings> {
         setState(() {
           isLoading = false;
         });
-        Get.snackbar('An error occurred', 'Please try again',
+        Get.snackbar('An error occurred', 'Check your connection and try again',
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,

@@ -95,8 +95,8 @@ class _CategoryContentState extends State<CategoryContent> {
             ),
           );
         } else if (state is CategoryError) {
-          return Center(
-            child: Text(state.error),
+          return const Center(
+            child: Text('Please check your connection and try again.'),
           );
         } else {
           return const Center(

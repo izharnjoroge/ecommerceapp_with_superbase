@@ -136,7 +136,7 @@
 //           isLoading = false;
 //         });
 
-//         Get.snackbar('An error occurred', 'Please try again',
+//         Get.snackbar('An error occurred', 'Check your connection and try again',
 //             backgroundColor: Colors.red,
 //             colorText: Colors.white,
 //             snackPosition: SnackPosition.BOTTOM,
@@ -164,7 +164,7 @@
 //       _locationModel = locations;
 //     } catch (e) {
 //       Get.back();
-//       Get.snackbar('An error occurred', 'Please try again',
+//       Get.snackbar('An error occurred', 'Check your connection and try again',
 //           backgroundColor: Colors.red,
 //           colorText: Colors.white,
 //           snackPosition: SnackPosition.BOTTOM,
@@ -503,7 +503,7 @@
 //         setState(() {
 //           isLoading = false;
 //         });
-//         Get.snackbar('An error occurred', 'Please try again',
+//         Get.snackbar('An error occurred', 'Check your connection and try again',
 //             backgroundColor: Colors.red,
 //             colorText: Colors.white,
 //             snackPosition: SnackPosition.BOTTOM,

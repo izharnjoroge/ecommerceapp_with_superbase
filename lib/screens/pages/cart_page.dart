@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/location_model.dart';
 import 'package:ecommerceapp/models/order_model.dart';
@@ -43,7 +41,6 @@ class _CartPageState extends State<CartPage> {
         details: locationModel,
         userId: user?.id ?? '');
 
-    log('model;$orderModel');
     try {
       await _orderRepo.sendOrder(orderModel);
 
@@ -51,15 +48,14 @@ class _CartPageState extends State<CartPage> {
         context.read<CartProvider>().clearCart();
       }
 
-      Get.snackbar('Order made successfully', '',
+      Get.snackbar('Order made successfully', 'Delivery will be made shortly.',
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,
           isDismissible: true,
-          duration: const Duration(seconds: 3));
+          duration: const Duration(seconds: 5));
     } catch (e) {
-      log('error;$e');
-      Get.snackbar('An error occurred', 'Please try again',
+      Get.snackbar('An error occurred', 'Check your connection and try again',
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,

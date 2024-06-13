@@ -95,8 +95,8 @@ class _BannerContentState extends State<BannerContent> {
                 scrollDirection: Axis.horizontal,
               ));
         } else if (state is BannerError) {
-          return Center(
-            child: Text(state.error),
+          return const Center(
+            child: Text('Please check your connection and try again.'),
           );
         } else {
           return const Center(

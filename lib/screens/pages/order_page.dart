@@ -62,13 +62,12 @@ class _MyOrdersState extends State<MyOrders> {
               return const Center(child: Text('Nothing Here'));
             }
           } else if (state is OrdersError) {
-            log('${state.error}');
             return const Center(
-              child: Text('Something went wrong'),
+              child: Text('Please check your connection and try again.'),
             );
           } else {
             return const Center(
-              child: Text('Something went wrong'),
+              child: Text('Please check your connection and try again.'),
             );
           }
         },

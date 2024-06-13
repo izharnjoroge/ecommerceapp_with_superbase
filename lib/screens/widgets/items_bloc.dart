@@ -84,7 +84,7 @@ class _ItemsBlocState extends State<ItemsBloc> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Color.fromARGB(255, 236, 236, 236),
+                            color: const Color.fromARGB(255, 236, 236, 236),
                           ),
                           padding: const EdgeInsets.all(2),
                           child: Column(
@@ -131,7 +131,7 @@ class _ItemsBlocState extends State<ItemsBloc> {
                   },
                 ),
                 if (isLoadingMore)
-                  Positioned(
+                  const Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
@@ -145,8 +145,8 @@ class _ItemsBlocState extends State<ItemsBloc> {
             return const Center(child: Text('Nothing Here'));
           }
         } else if (state is ItemsError) {
-          return Center(
-            child: Text(state.error),
+          return const Center(
+            child: Text('Please check your connection and try again.'),
           );
         } else {
           return const Center(
