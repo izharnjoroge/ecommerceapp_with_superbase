@@ -20,12 +20,12 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            Gap(20),
-            SearchWidget(),
-            Gap(20),
+            const Gap(20),
+            const SearchWidget(),
+            const Gap(20),
             Expanded(
               child: BlocBuilder<ItemsCubit, ItemsState>(
                 builder: (context, state) {
@@ -49,7 +49,8 @@ class _SearchPageState extends State<SearchPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromARGB(255, 236, 236, 236),
+                                  color:
+                                      const Color.fromARGB(255, 236, 236, 236),
                                 ),
                                 padding: const EdgeInsets.all(2),
                                 child: Row(

@@ -88,84 +88,135 @@ class _CartPageState extends State<CartPage> {
               child: SizedBox(
                 height: size.height * .85,
                 child: ListView.builder(
-                    itemCount: Item.length,
-                    padding: const EdgeInsets.all(5),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: ListTile(
-                          leading: SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: SvgPicture.network(
-                                Item[index].image,
-                                fit: BoxFit.cover,
-                              )),
-                          title: Text(Item[index].name),
-                          subtitle: Column(
+                  itemCount: Item.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                        leading: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: SvgPicture.network(
+                            Item[index].image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          Item[index].name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    Item[index].amount.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                              Text(
+                                Item[index].amount.toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                'Qty: ${Item[index].quantity ?? '1'}',
+                                style: const TextStyle(
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                               ),
                             ],
                           ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                context
-                                    .read<CartProvider>()
-                                    .removeFromCart(Item[index]);
-                              },
-                              icon: const Icon(Icons.delete)),
                         ),
-                      );
-                    }),
+                        trailing: IconButton(
+                          onPressed: () {
+                            context
+                                .read<CartProvider>()
+                                .removeFromCart(Item[index]);
+                          },
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             Container(
-              // margin: const EdgeInsets.all(10),
-              height: size.height * .1,
+              height: size.height * .12,
               width: size.width,
               decoration: BoxDecoration(
-                color: Colors.purpleAccent,
+                gradient: const LinearGradient(
+                  colors: [Colors.purple, Colors.purpleAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Total: ',
+                        'Total:',
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                      const Gap(10),
+                      const SizedBox(height: 8),
                       Row(
                         children: [
                           const Text(
                             'KSH',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                          const Gap(10),
+                          const SizedBox(width: 5),
                           Text(
-                            ' ${context.read<CartProvider>().getTotal().toDouble().toString()}',
+                            ' ${context.read<CartProvider>().getTotal()}',
                             style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                   GestureDetector(
@@ -174,29 +225,35 @@ class _CartPageState extends State<CartPage> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                              style: BorderStyle.solid)),
-                      padding: const EdgeInsets.all(12),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
+                          style: BorderStyle.solid,
+                        ),
+                        color: Colors.white.withOpacity(0.1),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
                       child: const Row(
                         children: [
                           Text(
                             'Order Now',
                             style: TextStyle(
                               color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+                          SizedBox(width: 8),
                           Icon(
                             Icons.arrow_forward_ios_outlined,
                             color: Colors.white,
                             size: 16,
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             )

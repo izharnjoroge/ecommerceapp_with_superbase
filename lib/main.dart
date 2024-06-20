@@ -19,6 +19,8 @@ class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
+bool _supabaseInitialized = false;
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -28,10 +30,13 @@ main() async {
 }
 
 Future<void> initSupaBase() async {
-  await Supabase.initialize(
-    url: dotenv.get('PUBLIC_URL'),
-    anonKey: dotenv.get('PUBLIC_KEY'),
-  );
+  if (!_supabaseInitialized) {
+    await Supabase.initialize(
+      url: dotenv.get('PUBLIC_URL'),
+      anonKey: dotenv.get('PUBLIC_KEY'),
+    );
+    _supabaseInitialized = true;
+  }
 }
 
 class MyApp extends StatelessWidget {

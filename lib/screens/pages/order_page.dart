@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ecommerceapp/models/order_model.dart';
 import 'package:ecommerceapp/screens/widgets/item_details.dart';
 import 'package:flutter/material.dart';
@@ -62,8 +60,8 @@ class _MyOrdersState extends State<MyOrders> {
               return const Center(child: Text('Nothing Here'));
             }
           } else if (state is OrdersError) {
-            return const Center(
-              child: Text('Please check your connection and try again.'),
+            return Center(
+              child: Text(state.error),
             );
           } else {
             return const Center(

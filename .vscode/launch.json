@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ecommerceapp_with_superbase",
+      "request": "launch",
+      "type": "dart",
+      "toolArgs": ["--enable-software-rendering"]
+    },
+    {
+      "name": "ecommerceapp_with_superbase (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "toolArgs": ["--enable-software-rendering"]
+    },
+    {
+      "name": "ecommerceapp_with_superbase (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "toolArgs": ["--enable-software-rendering"]
+    }
+  ]
+}

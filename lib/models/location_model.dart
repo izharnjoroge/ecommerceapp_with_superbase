@@ -3,13 +3,13 @@ class LocationModel {
   final String? street;
   final String? description;
 
-  LocationModel({required this.area, required this.street, this.description});
+  LocationModel({this.area, this.street, this.description});
 
   factory LocationModel.fromJson(Map<String, dynamic> json) {
     return LocationModel(
-      street: json['street'] as String,
-      area: json['area'] as String,
-      description: json['description'] as String,
+      street: json['street'] as String? ?? '',
+      area: json['area'] as String? ?? '',
+      description: json['description'] as String? ?? '',
     );
   }
 
