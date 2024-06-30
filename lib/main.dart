@@ -1,3 +1,4 @@
+import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:ecommerceapp/blocs/orderBloc/order_bloc_cubit.dart';
 import 'package:ecommerceapp/repos/categoryRepo/category_repo.dart';
 import 'package:ecommerceapp/repos/orderRepo/order_repo.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return FutureBuilder<void>(
       future: initSupaBase(),
       builder: (context, snapshot) {
@@ -88,14 +90,23 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (context) => CartProvider()),
             ],
             child: GetMaterialApp(
-                navigatorKey: NavigationService.navigatorKey,
-                debugShowCheckedModeBanner: false,
-                title: 'E-Commerce App',
-                home: session != null
+              navigatorKey: NavigationService.navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'E-Commerce App',
+              home: FlutterSplashScreen(
+                // useImmersiveMode: true,
+                duration: const Duration(seconds: 2),
+                nextScreen: session != null
                     ? session.isExpired
                         ? const LoginScreen()
                         : const LandingPage()
-                    : const LoginScreen()),
+                    : const LoginScreen(),
+                backgroundColor: Colors.white,
+                splashScreenBody: Center(
+                  child: Image.asset("assets/images/splash.png"),
+                ),
+              ),
+            ),
           ),
         );
       },

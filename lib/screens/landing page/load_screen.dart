@@ -32,33 +32,30 @@ class _LandingPageState extends State<LandingPage> {
           resizeToAvoidBottomInset: false,
           appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
           drawer: const DrawerPage(),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  SizedBox(
-                    height: size.height * .25,
-                    child: const CarouselBLoc(),
-                  ),
-                  const Gap(20),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Categories',
-                        style: TextStyle(
-                            color: Colors.purple,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                      height: size.height * .75, child: const CategoryBLoc()),
-                  const Gap(10),
-                ]),
-              ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: SingleChildScrollView(
+              child: Column(children: [
+                SizedBox(
+                  height: size.height * .20,
+                  child: const CarouselBLoc(),
+                ),
+                const Gap(20),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Categories',
+                      style: TextStyle(
+                          color: Colors.purple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * .6, child: const CategoryBLoc()),
+                const SizedBox(height: 10),
+              ]),
             ),
           ),
           floatingActionButton: badges.Badge(

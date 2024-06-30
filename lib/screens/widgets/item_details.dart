@@ -102,89 +102,87 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ],
               ),
               const Gap(10),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Quantity',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              const Gap(10),
-                              ItemCount(
-                                itemCount: itemCount,
-                                productModel: widget.itemModel,
-                                onItemCountChanged: (newCount) {
-                                  setState(() {
-                                    itemCount = newCount;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Gap(20),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                width: size.width - 50,
+                decoration: BoxDecoration(
+                  color: Colors.purple,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.itemModel.amount,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                              ),
-                              onPressed: () {
-                                if (isInCart) {
-                                  setState(() {
-                                    itemCount = 1;
-                                  });
-                                  context
-                                      .read<CartProvider>()
-                                      .removeFromCart(widget.itemModel);
-                                } else {
-                                  context
-                                      .read<CartProvider>()
-                                      .addToCart(widget.itemModel);
-                                }
-                              },
-                              child: Text(
-                                isInCart ? 'Remove From Cart' : 'Add To Cart',
-                                style: TextStyle(
-                                  color: isInCart ? Colors.red : Colors.purple,
+                            const Text(
+                              'Quantity',
+                              style: TextStyle(
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                                  fontSize: 20),
+                            ),
+                            const Gap(10),
+                            ItemCount(
+                              itemCount: itemCount,
+                              productModel: widget.itemModel,
+                              onItemCountChanged: (newCount) {
+                                setState(() {
+                                  itemCount = newCount;
+                                });
+                              },
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                    const Gap(20),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.itemModel.amount,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                            ),
+                            onPressed: () {
+                              if (isInCart) {
+                                setState(() {
+                                  itemCount = 1;
+                                });
+                                context
+                                    .read<CartProvider>()
+                                    .removeFromCart(widget.itemModel);
+                              } else {
+                                context
+                                    .read<CartProvider>()
+                                    .addToCart(widget.itemModel);
+                              }
+                            },
+                            child: Text(
+                              isInCart ? 'Remove From Cart' : 'Add To Cart',
+                              style: TextStyle(
+                                color: isInCart ? Colors.red : Colors.purple,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],
