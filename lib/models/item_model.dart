@@ -44,6 +44,7 @@ class ItemModel {
         'amount': amount,
         'rating': rating,
         'categoryId': categoryId,
+        'quantity': quantity
       };
 
   @override

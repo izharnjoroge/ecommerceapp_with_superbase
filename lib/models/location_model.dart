@@ -13,7 +13,11 @@ class LocationModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {'area': area ?? '', 'street': street ?? ''};
+  Map<String, dynamic> toJson() => {
+        'area': area ?? '',
+        'street': street ?? '',
+        'description': description ?? ''
+      };
 
   @override
   String toString() {

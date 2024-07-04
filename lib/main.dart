@@ -17,7 +17,8 @@ import 'blocs/itemsBloc/items_cubit.dart';
 import 'repos/itemsRepo/items_repo.dart';
 
 class NavigationService {
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 }
 
 bool _supabaseInitialized = false;
@@ -45,7 +46,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return FutureBuilder<void>(
       future: initSupaBase(),
       builder: (context, snapshot) {

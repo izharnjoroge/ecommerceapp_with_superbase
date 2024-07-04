@@ -5,7 +5,6 @@ import 'package:ecommerceapp/screens/widgets/item_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -103,7 +102,7 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
               const Gap(10),
               Container(
-                width: size.width - 50,
+                width: size.width,
                 decoration: BoxDecoration(
                   color: Colors.purple,
                   borderRadius: BorderRadius.circular(20),
@@ -168,11 +167,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                               } else {
                                 context
                                     .read<CartProvider>()
-                                    .addToCart(widget.itemModel);
+                                    .addToCart(widget.itemModel, itemCount);
                               }
                             },
                             child: Text(
-                              isInCart ? 'Remove From Cart' : 'Add To Cart',
+                              isInCart ? 'Remove' : 'Add To Cart',
                               style: TextStyle(
                                 color: isInCart ? Colors.red : Colors.purple,
                                 fontWeight: FontWeight.bold,

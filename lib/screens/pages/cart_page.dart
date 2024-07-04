@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommerceapp/models/item_model.dart';
 import 'package:ecommerceapp/models/location_model.dart';
 import 'package:ecommerceapp/models/order_model.dart';
@@ -10,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../functions/utils.dart';
+
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
@@ -20,6 +24,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final OrderRepo _orderRepo = OrderRepo();
   final supabase = Supabase.instance.client;
+  final UtilitiesFunctions utilitiesFunctions = UtilitiesFunctions();
 
   _makeOrder(List<ItemModel> item) async {
     final user = supabase.auth.currentUser;
@@ -31,12 +36,14 @@ class _CartPageState extends State<CartPage> {
     final area = userMetadata?['area'] ?? '';
     final street = userMetadata?['street'] ?? '';
 
+    log('location;$description');
+
     LocationModel locationModel =
         LocationModel(area: area, street: street, description: description);
 
     OrderModelSent orderModel = OrderModelSent(
         items: item,
-        amount: context.read<CartProvider>().getTotal().toString(),
+        amount: context.read<CartProvider>().getTotal(),
         completed: false,
         details: locationModel,
         userId: user?.id ?? '');
@@ -68,6 +75,8 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     List<ItemModel> Item = context.watch<CartProvider>().itemData;
     Size size = MediaQuery.of(context).size;
+    String grandTotal = utilitiesFunctions.formatAmountWithSymbol(
+        context.watch<CartProvider>().getTotal(), 'en_US');
 
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +102,7 @@ class _CartPageState extends State<CartPage> {
                     return Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
@@ -135,6 +144,7 @@ class _CartPageState extends State<CartPage> {
                                   fontSize: 14,
                                 ),
                               ),
+                              const Spacer(),
                               Text(
                                 'Qty: ${Item[index].quantity ?? '1'}',
                                 style: const TextStyle(
@@ -152,7 +162,7 @@ class _CartPageState extends State<CartPage> {
                                 .read<CartProvider>()
                                 .removeFromCart(Item[index]);
                           },
-                          icon: const Icon(Icons.delete, color: Colors.red),
+                          icon: const Icon(Icons.delete),
                         ),
                       ),
                     );
@@ -208,7 +218,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            ' ${context.read<CartProvider>().getTotal()}',
+                            grandTotal,
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -221,7 +231,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _makeOrder(Item);
+                      Item.length.isGreaterThan(0) ? _makeOrder(Item) : () {};
                     },
                     child: Container(
                       decoration: BoxDecoration(

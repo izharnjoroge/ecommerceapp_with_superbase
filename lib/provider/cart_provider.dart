@@ -8,10 +8,10 @@ class CartProvider extends ChangeNotifier {
 
   List<ItemModel> get itemData => _ItemModel;
 
-  void addToCart(ItemModel item) {
+  void addToCart(ItemModel item, int quantity) {
     int existingIndex = _ItemModel.indexWhere((p) => p.item_id == item.item_id);
     if (existingIndex == -1) {
-      item.quantity = 1;
+      item.quantity = quantity;
       _ItemModel.add(item);
     }
     notifyListeners();
@@ -53,7 +53,7 @@ class CartProvider extends ChangeNotifier {
     return _ItemModel.length;
   }
 
-  String getTotal() {
+  double getTotal() {
     double total = 0.0;
 
     for (var item in _ItemModel) {
@@ -64,6 +64,6 @@ class CartProvider extends ChangeNotifier {
       total += price * (item.quantity ?? 1);
     }
 
-    return utilitiesFunctions.formatAmountWithSymbol(total, 'en_US');
+    return total;
   }
 }

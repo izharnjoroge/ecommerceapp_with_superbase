@@ -39,7 +39,7 @@ class OrderModel {
 
 class OrderModelSent {
   final List<ItemModel> items;
-  final String amount;
+  final double amount;
   final bool completed;
   final LocationModel details;
   final String userId;
