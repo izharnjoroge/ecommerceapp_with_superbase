@@ -4,7 +4,7 @@ import 'package:ecommerceapp/models/location_model.dart';
 class OrderModel {
   final String id;
   final DateTime created_at;
-  final List<ItemModel> items;
+  final List<OrderItemModel> items;
   final int amount;
   final bool completed;
   final LocationModel details;
@@ -23,7 +23,7 @@ class OrderModel {
       id: json['id'] as String,
       created_at: DateTime.parse(json['created_at'] as String),
       items: (json['items'] as List<dynamic>)
-          .map((item) => ItemModel.fromJson(item as Map<String, dynamic>))
+          .map((item) => OrderItemModel.fromJson(item as Map<String, dynamic>))
           .toList(),
       amount: json['amount'] as int,
       completed: json['completed'] as bool,

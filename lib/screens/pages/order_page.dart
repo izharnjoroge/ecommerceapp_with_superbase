@@ -3,6 +3,7 @@ import 'package:ecommerceapp/screens/widgets/item_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/orderBloc/order_bloc_cubit.dart';
@@ -153,6 +154,7 @@ class OrderDetailsModal extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Total Amount: \KSH ${order.amount}',
@@ -160,9 +162,12 @@ class OrderDetailsModal extends StatelessWidget {
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Items:',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          const Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              'Items:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ),
           Expanded(
             child: ListView.builder(
@@ -170,8 +175,7 @@ class OrderDetailsModal extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () => Get.to(
-                        () => ItemDetails(itemModel: order.items[index])),
+                    onTap: () {},
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15)),
@@ -190,6 +194,13 @@ class OrderDetailsModal extends StatelessWidget {
                               children: [
                                 Text(
                                   order.items[index].amount.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Gap(10),
+                                Text(
+                                  "Qty: ${order.items[index].quantity.toString()}",
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
