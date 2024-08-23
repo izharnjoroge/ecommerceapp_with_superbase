@@ -69,7 +69,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
         setState(() {
           isLoading = false;
         });
-        Get.snackbar(response, '',
+        Get.snackbar('Wrong OTP', 'Please retry or check your connection',
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
