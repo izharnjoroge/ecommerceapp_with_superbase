@@ -15,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       clipper: AppBarClipper(),
       child: AppBar(
         title: const Text(
-          'E-Commerce',
+          'Astroune',
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),

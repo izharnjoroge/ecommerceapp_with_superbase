@@ -1,12 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
+import 'package:provider/provider.dart';
 import '../../blocs/itemsBloc/items_cubit.dart';
+import '../../provider/categoryId_provider.dart';
 import 'item_details.dart';
 
 class ItemsBloc extends StatefulWidget {
@@ -23,16 +22,23 @@ class _ItemsBlocState extends State<ItemsBloc> {
   @override
   void initState() {
     super.initState();
-    context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
+    _fetchItems();
     _scrollController.addListener(_onScroll);
   }
 
-  @override
-  void didUpdateWidget(covariant ItemsBloc oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.categoryId != widget.categoryId) {
+  void _fetchItems() {
+    final selectedID = context.read<SelectedCategoryProvider>().selectedID;
+    if (selectedID.isNotEmpty) {
+      context.read<ItemsCubit>().getItemsByCategory(selectedID);
+    } else {
       context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchItems();
   }
 
   @override
@@ -44,18 +50,14 @@ class _ItemsBlocState extends State<ItemsBloc> {
 
   void _onScroll() {
     if (_scrollController.position.extentAfter < 200) {
-      context.read<ItemsCubit>().loadMoreItems(widget.categoryId);
+      final selectedID = context.read<SelectedCategoryProvider>().selectedID;
+      context.read<ItemsCubit>().loadMoreItems(selectedID);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ItemsCubit, ItemsState>(
-      listener: (context, state) {
-        if (state is SearchLoaded) {
-          context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
-        }
-      },
+    return BlocBuilder<ItemsCubit, ItemsState>(
       builder: (context, state) {
         if (state is ItemsLoading) {
           return const Center(

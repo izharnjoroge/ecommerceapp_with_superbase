@@ -37,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
             child: SingleChildScrollView(
               child: Column(children: [
                 SizedBox(
-                  height: size.height * .20,
+                  height: size.height * .30,
                   child: const CarouselBLoc(),
                 ),
                 const Gap(20),
@@ -53,7 +53,8 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: size.height * .6, child: const CategoryBLoc()),
+                SizedBox(
+                    height: size.height * .6, child: const CategoryContent()),
                 const SizedBox(height: 10),
               ]),
             ),

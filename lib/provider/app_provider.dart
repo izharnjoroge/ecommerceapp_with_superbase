@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/provider/categoryId_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,8 @@ class AppProviders extends StatelessWidget {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => CartProvider()),
+          ChangeNotifierProvider(
+              create: (context) => SelectedCategoryProvider()),
         ],
         child: child,
       ),

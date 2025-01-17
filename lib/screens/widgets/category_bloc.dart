@@ -1,23 +1,10 @@
-import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
-import 'package:ecommerceapp/models/category_model.dart';
-import 'package:ecommerceapp/screens/widgets/items_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerceapp/models/category_model.dart';
+import 'package:ecommerceapp/blocs/categoryBloc/category_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-class CategoryBLoc extends StatefulWidget {
-  const CategoryBLoc({super.key});
-
-  @override
-  State<CategoryBLoc> createState() => _CategoryBLocState();
-}
-
-class _CategoryBLocState extends State<CategoryBLoc> {
-  @override
-  Widget build(BuildContext context) {
-    return const CategoryContent();
-  }
-}
+import '../../provider/categoryId_provider.dart';
+import 'items_bloc.dart';
 
 class CategoryContent extends StatefulWidget {
   const CategoryContent({super.key});
@@ -30,7 +17,7 @@ class _CategoryContentState extends State<CategoryContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isTabControllerInitialized = false;
-  String selectedID = '';
+  bool _isSelectedIdSet = false; // Track if the selected ID has been set.
 
   @override
   void initState() {
@@ -48,13 +35,24 @@ class _CategoryContentState extends State<CategoryContent>
 
   void _initializeTabController(List<CategoryModel> categories) {
     _tabController = TabController(length: categories.length, vsync: this);
-    _tabController.addListener(() async {
-      await Future.delayed(const Duration(seconds: 1));
-      setState(() {
-        selectedID = categories[_tabController.index].category_id;
-      });
+    _tabController.addListener(() {
+      final selectedID = categories[_tabController.index].category_id;
+      context.read<SelectedCategoryProvider>().setSelectedID(selectedID);
     });
     _isTabControllerInitialized = true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final provider = context.read<SelectedCategoryProvider>();
+    final cubitState = context.read<CategoryCubit>().state;
+
+    if (!_isSelectedIdSet && cubitState is CategoryLoaded) {
+      provider.setSelectedID(cubitState.categoryModel[0].category_id);
+      _isSelectedIdSet = true;
+    }
   }
 
   @override
@@ -66,10 +64,11 @@ class _CategoryContentState extends State<CategoryContent>
             child: CircularProgressIndicator(color: Colors.purple),
           );
         } else if (state is CategoryLoaded) {
-          // Initialize the TabController if it's not already initialized
           if (!_isTabControllerInitialized) {
             _initializeTabController(state.categoryModel);
           }
+
+          final initialId = state.categoryModel[0].category_id;
 
           return DefaultTabController(
             length: state.categoryModel.length,
@@ -77,18 +76,17 @@ class _CategoryContentState extends State<CategoryContent>
               children: [
                 TabBar(
                   controller: _tabController,
-                  onTap: (value) async {
-                    await Future.delayed(const Duration(seconds: 1));
-                    setState(() {
-                      selectedID = state.categoryModel[value].category_id;
-                    });
-                  },
-                  dividerColor: const Color.fromARGB(221, 29, 29, 29),
                   labelColor: Colors.purple,
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                   unselectedLabelColor: Colors.grey,
                   indicatorColor: Colors.purple,
                   isScrollable: true,
+                  onTap: (index) {
+                    final selectedID = state.categoryModel[index].category_id;
+                    context
+                        .read<SelectedCategoryProvider>()
+                        .setSelectedID(selectedID);
+                  },
                   tabs: state.categoryModel.map((category) {
                     return Tab(
                       child: Row(
@@ -98,9 +96,7 @@ class _CategoryContentState extends State<CategoryContent>
                             width: 20,
                             height: 20,
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           Text(category.name),
                         ],
                       ),
@@ -110,15 +106,15 @@ class _CategoryContentState extends State<CategoryContent>
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: state.categoryModel.map((category) {
-                        return ItemsBloc(
-                          categoryId: selectedID == ''
-                              ? state.categoryModel[0].category_id
-                              : selectedID,
-                        );
-                      }).toList(),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: TabBarView(
+                        key: ValueKey<int>(_tabController.index),
+                        controller: _tabController,
+                        children: state.categoryModel.map((category) {
+                          return ItemsBloc(categoryId: initialId);
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
@@ -126,12 +122,26 @@ class _CategoryContentState extends State<CategoryContent>
             ),
           );
         } else if (state is CategoryError) {
-          return const Center(
-            child: Text('Please check your connection and try again.'),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Failed to load categories. Please try again.',
+                  style: TextStyle(color: Colors.red),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<CategoryCubit>().getCategories();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           );
         } else {
           return const Center(
-            child: Text('Error fetching data'),
+            child: Text('Unknown error occurred.'),
           );
         }
       },
