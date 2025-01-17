@@ -59,15 +59,15 @@ class Auth {
     }
   }
 
-  Future<String> resendOtp(String phone) async {
+  Future<String> resendOtp(String email) async {
     // final ResendResponse res = await supabase.auth.resend(
     //   type: OtpType.sms,
     //   phone: phone,
     // )
     try {
       await supabase.auth.resend(
-        type: OtpType.sms,
-        phone: phone,
+        type: OtpType.email,
+        email: email,
       );
       return 'success';
     } catch (e) {

@@ -1,4 +1,4 @@
-package com.example.ecommerceapp_with_superbase
+package com.astroune.ecommerceapp
 
 import io.flutter.embedding.android.FlutterActivity
 

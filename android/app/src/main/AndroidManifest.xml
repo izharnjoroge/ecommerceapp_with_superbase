@@ -3,7 +3,7 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <!-- ... -->
     <application
-        android:label="ecommerceapp_with_superbase"
+        android:label="Astroune E-commerce"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

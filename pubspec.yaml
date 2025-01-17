@@ -32,7 +32,7 @@ dependencies:
   badges: ^3.1.2
   bloc: ^8.1.4
   cached_network_image: ^3.3.0
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
@@ -60,7 +60,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/cart512.png"
+  image_path: "assets/images/black-logo.png"
   min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the

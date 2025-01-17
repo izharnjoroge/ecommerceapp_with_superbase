@@ -48,7 +48,8 @@ class _CategoryContentState extends State<CategoryContent>
 
   void _initializeTabController(List<CategoryModel> categories) {
     _tabController = TabController(length: categories.length, vsync: this);
-    _tabController.addListener(() {
+    _tabController.addListener(() async {
+      await Future.delayed(const Duration(seconds: 1));
       setState(() {
         selectedID = categories[_tabController.index].category_id;
       });
@@ -76,7 +77,8 @@ class _CategoryContentState extends State<CategoryContent>
               children: [
                 TabBar(
                   controller: _tabController,
-                  onTap: (value) {
+                  onTap: (value) async {
+                    await Future.delayed(const Duration(seconds: 1));
                     setState(() {
                       selectedID = state.categoryModel[value].category_id;
                     });

@@ -1,12 +1,13 @@
 import 'dart:developer';
 
-import 'package:ecommerceapp/blocs/itemsBloc/items_cubit.dart';
-import 'package:ecommerceapp/screens/widgets/item_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import '../../blocs/itemsBloc/items_cubit.dart';
+import 'item_details.dart';
 
 class ItemsBloc extends StatefulWidget {
   final String categoryId;
@@ -49,7 +50,12 @@ class _ItemsBlocState extends State<ItemsBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ItemsCubit, ItemsState>(
+    return BlocConsumer<ItemsCubit, ItemsState>(
+      listener: (context, state) {
+        if (state is SearchLoaded) {
+          context.read<ItemsCubit>().getItemsByCategory(widget.categoryId);
+        }
+      },
       builder: (context, state) {
         if (state is ItemsLoading) {
           return const Center(
